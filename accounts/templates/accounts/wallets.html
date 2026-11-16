@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Linked wallets{% endblock %}
+{% block content %}
+<h1>Linked wallets</h1>
+      <p>
+        Link multiple TRON addresses by signing a one-time message in your wallet.
+        The site never asks for or stores private keys and never sends transactions
+        from these wallets. Linked addresses are associated with this account for
+        transparent records; this feature does not hide transaction history.
+      </p>
+      {% if error %}<p role="alert">{{ error }}</p>{% endif %}
+      <h2>Add a TRON wallet</h2>
+      <form method="post" action="{% url 'accounts:wallet_challenge_start' %}">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Create ownership challenge</button>
+      </form>
+      <h2>Wallet history</h2>
+      {% if wallet_links %}
+        <ul>
+          {% for wallet in wallet_links %}
+            <li>
+              <strong>{{ wallet.get_chain_display }}</strong>:
+              <code>{{ wallet.address }}</code>
+              {% if wallet.unlinked_at %}
+                <span>Unlinked {{ wallet.unlinked_at|date:"Y-m-d H:i" }} UTC</span>
+              {% else %}
+                <span>Linked {{ wallet.linked_at|date:"Y-m-d H:i" }} UTC</span>
+                <form method="post" action="{% url 'accounts:unlink_wallet' wallet.pk %}">
+                  {% csrf_token %}
+                  <button type="submit">Unlink</button>
+                </form>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No wallets have been linked.</p>
+      {% endif %}
+      <p><a href="{% url 'accounts:profile' %}">Back to profile</a></p>
+{% endblock %}

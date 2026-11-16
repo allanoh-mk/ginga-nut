@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Dispute review queue{% endblock %}
+{% block content %}
+<h1>Dispute review queue</h1>
+      <ul>
+        {% for dispute in disputes %}
+          <li>
+            <a href="{% url 'orders:review-dispute' dispute.pk %}">
+              Order {{ dispute.order_id }} — submitted {{ dispute.created_at }}
+            </a>
+          </li>
+        {% empty %}
+          <li>{% include "components/empty_state.html" with title="No open disputes" description="Disputes will appear here after a buyer opens one on an order." %}</li>
+        {% endfor %}
+      </ul>
+      {% include "pagination.html" %}
+{% endblock %}

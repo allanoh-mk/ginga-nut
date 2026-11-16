@@ -1,0 +1,4 @@
+<fieldset class="field-group">
+  {% if legend %}<legend>{{ legend }}</legend>{% endif %}
+  {% for field in fields %}{{ field.as_field_group }}{% endfor %}
+</fieldset>

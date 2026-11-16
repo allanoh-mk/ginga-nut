@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Order operations · Kola Market{% endblock %}
+{% block content %}
+<p class="eyebrow">Staff only · Operations</p>
+      <h1>Orders</h1>
+      <form method="get" class="ops-order-filters">
+        <label for="id_status">Status</label>{{ form.status }}
+        <label for="id_city">City</label>{{ form.city }}
+        <label for="id_start_date">From</label>{{ form.start_date }}
+        <label for="id_end_date">To</label>{{ form.end_date }}
+        {% for error in form.non_field_errors %}<p role="alert">{{ error }}</p>{% endfor %}
+        <button type="submit">Filter orders</button>
+      </form>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>Order</th><th>Status</th><th>Buyer</th><th>Vendor</th><th>Listing</th><th>City</th><th>Total</th><th>Created</th><th>Updated</th></tr>
+          </thead>
+          <tbody>
+            {% for order in page_obj %}
+              <tr>
+                <td data-label="Order"><a href="{% url 'orders:detail' order.pk %}">#{{ order.pk }}</a></td>
+                <td data-label="Status">{{ order.get_state_display }}</td>
+                <td data-label="Buyer">{{ order.buyer.username }}</td>
+                <td data-label="Vendor">{{ order.vendor.user.username }}</td>
+                <td data-label="Listing">{{ order.listing_title|default:order.listing.title }}</td>
+                <td data-label="City">{% if order.delivery_zone %}{{ order.delivery_zone.city.name }}{% else %}—{% endif %}</td>
+                <td data-label="Total">{{ order.total_amount|intcomma }}</td>
+                <td data-label="Created">{{ order.created_at|date:"Y-m-d H:i" }}</td>
+                <td data-label="Updated">{{ order.updated_at|date:"Y-m-d H:i" }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="9">No orders match these filters.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <nav aria-label="Order pages" class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+      </nav>
+{% endblock %}

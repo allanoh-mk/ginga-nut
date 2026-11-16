@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the Kola Market fee sweep daily
+
+[Timer]
+OnCalendar=*-*-* 00:20:00 UTC
+Persistent=true
+Unit=mk-market-fee-sweep.service
+
+[Install]
+WantedBy=timers.target

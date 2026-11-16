@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Withdrawals paused · Kola Market{% endblock %}
+{% block content %}<p class="eyebrow">Feature status</p><h1>Withdrawals are paused</h1><p>Requests and sends will resume when withdrawals are enabled. Existing requests remain available in your history.</p><p><a href="{% url 'accounts:withdrawals' %}">View withdrawal history</a></p>{% endblock %}

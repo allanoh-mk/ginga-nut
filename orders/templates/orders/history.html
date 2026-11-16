@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+{% block content %}
+<h1>My Orders</h1>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Listing</th>
+            <th scope="col">Order</th>
+            <th scope="col">Role</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td data-label="Listing">
+                <a href="{% url 'orders:detail' order.pk %}">
+                  {{ order.listing_title|default:order.listing.title }}
+                </a>
+              </td>
+              <td data-label="Order">{{ order.pk }}</td>
+              <td data-label="Role">{% if order.buyer_id == request.user.pk %}Buyer{% else %}Vendor{% endif %}</td>
+              <td data-label="Status">{{ order.get_state_display }}</td>
+              <td data-label="Date">{{ order.created_at|date:"Y-m-d H:i" }}</td>
+              <td data-label="Total">{{ order.total_amount }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6">You have no orders yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
+{% endblock %}

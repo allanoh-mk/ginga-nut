@@ -1,0 +1,26 @@
+[Unit]
+Description=Local Monero daemon routed through Tor
+After=network-online.target tor.service
+Wants=network-online.target
+Requires=tor.service
+
+[Service]
+Type=simple
+User=kola
+Group=kola
+EnvironmentFile=/etc/kola/monero.env
+StateDirectory=kola-monero
+StateDirectoryMode=0700
+ExecStart=/usr/bin/monerod --non-interactive --prune-blockchain --data-dir=/var/lib/kola-monero --rpc-bind-ip=127.0.0.1 --rpc-bind-port=18081 --p2p-bind-ip=127.0.0.1 --proxy=${MONEROD_TOR_PROXY} --hide-my-port --no-igd
+Restart=on-failure
+RestartSec=10s
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/kola-monero
+NoNewPrivileges=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

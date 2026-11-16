@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Add funds · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Balance</p><h1>Deposit addresses</h1><p>Request one address per chain. Send only the matching asset to that address.</p></header>
+{% include "components/balance_strip.html" with available=available_balance held=held_balance %}
+<p><a href="{% url 'accounts:balance' %}">Balance overview</a> · <a href="{% url 'accounts:deposit_history' %}">Deposit history</a></p>
+<form method="post" action="{% url 'accounts:deposit_address_create' %}"><fieldset><legend>Request an address</legend>{% csrf_token %}{% if form.non_field_errors %}<div class="field__error" role="alert">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}{% include "components/form_field.html" with field=field %}{% endfor %}{% include "components/button.html" with label="Request deposit address" variant="primary" type="submit" %}</fieldset></form>
+<section class="guide-section" aria-labelledby="addresses-heading"><h2 id="addresses-heading">Deposit addresses</h2>
+{% if addresses %}<ul class="plain-list">{% for address in addresses %}<li class="listing-card"><h3>{{ address.get_chain_display }}</h3><p>Send only {{ address.get_chain_display }} to this address.</p>{% include "components/copy_block.html" with id=address.pk label="Deposit address · select text to copy" value=address.address %}<p>Spendable after {{ address.confirmation_depth }} confirmations.</p><p>Created <time datetime="{{ address.created_at|date:'c' }}">{{ address.created_at|date:"Y-m-d H:i" }} UTC</time></p><h4>Recent deposits</h4>
+  {% if address.recent_deposits %}<ul>{% for deposit in address.recent_deposits %}<li class="{% if deposit.state == 'seen' or deposit.state == 'confirming' %}is-pending{% endif %}">{% include "components/status_pill.html" with state=deposit.state label=deposit.get_state_display %} · {{ deposit.confirmations }} of {{ address.confirmation_depth }} confirmations · <span class="amount">{{ deposit.amount_atomic }} atomic units</span>{% if deposit.state == 'confirmed' %} · <a href="{% url 'accounts:deposit_quote_convert' deposit.pk %}">Get conversion quote</a>{% endif %}</li>{% endfor %}</ul>{% else %}<p class="field__help">Deposits will appear after a transaction is detected at this address.</p>{% endif %}
+</li>{% endfor %}</ul>{% else %}{% include "components/empty_state.html" with title="No deposit addresses" description="Addresses will appear here after a chain is selected and an address is requested." %}{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+[Unit]
+Description=Kola Market daily fee and spread sweep
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=kola
+Group=kola
+WorkingDirectory=/opt/kola
+EnvironmentFile=/opt/kola/.env
+ExecStart=/opt/kola/.venv/bin/python /opt/kola/manage.py sweep_market_fees
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/kola

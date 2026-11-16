@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Reviews for {{ listing.title }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'catalog:listing' listing.pk %}">Back to {{ listing.title }}</a></p>
+      <header class="page-heading"><p class="eyebrow">Reviews</p><h1>Reviews for {{ listing.title }}</h1></header>
+      <p>{{ listing.average_rating|floatformat:1 }} out of 5 from {{ listing.review_count }} reviews</p>
+      <ol>
+        {% for review in reviews %}
+          <li class="review-card">
+            <strong>{{ review.rating }} / 5</strong>
+            <span>by {{ review.order.buyer.username }}</span>
+            <time datetime="{{ review.created_at|date:'c' }}">{{ review.created_at|date:"Y-m-d" }}</time>
+            {% if review.comment %}<p>{{ review.comment|linebreaksbr }}</p>{% endif %}
+          </li>
+        {% empty %}
+          <li>No reviews yet.</li>
+        {% endfor %}
+      </ol>
+      {% include "pagination.html" %}
+{% endblock %}

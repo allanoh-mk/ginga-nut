@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Vendor profile{% endblock %}
+{% block content %}
+<h1>Vendor profile</h1>
+      {% if not profile.is_approved %}
+        <p>Your profile is awaiting admin approval.</p>
+        <h2>Bond</h2><p>Bond balance: <span class="amount">{{ profile.bond_amount }} base units</span>.</p>
+        <form method="post" action="{% url 'catalog:vendor-bond' %}">
+          {% csrf_token %}<fieldset><legend>Add to vendor bond</legend>
+            <label for="bond-amount">Amount in base units</label><input id="bond-amount" name="amount_base_units" inputmode="numeric" type="number" min="1" required>
+            <button type="submit">Add bond</button>
+          </fieldset>
+        </form>
+      {% else %}
+        <p>Vendor bond: <span class="amount">{{ profile.bond_amount }} base units</span>.</p>
+        <form method="post" action="{% url 'catalog:vendor-bond' %}">
+          {% csrf_token %}<fieldset><legend>Add to vendor bond</legend>
+            <label for="bond-amount">Amount in base units</label><input id="bond-amount" name="amount_base_units" inputmode="numeric" type="number" min="1" required>
+            <button type="submit">Add bond</button>
+          </fieldset>
+        </form>
+        <p><a href="{% url 'catalog:vendor-order-queue' %}">View order queue</a> · <a href="{% url 'catalog:vendor-payouts' %}">View payouts</a></p>
+        <p><a href="{% url 'catalog:vendor-create-listing' %}">Create listing</a></p>
+        <form method="get">
+          {{ filter_form.as_div }}
+          <button type="submit">Filter listings</button>
+        </form>
+        <ul>
+          {% for listing in listings %}
+            <li>
+              <a href="{% url 'catalog:vendor-edit-listing' listing.pk %}">{{ listing.title }}</a>
+              {% if listing.is_active %}(active){% else %}(inactive){% endif %}
+              <a href="{% url 'catalog:vendor-delete-listing' listing.pk %}">Delete listing</a>
+            </li>
+          {% empty %}
+            <li>{% include "components/empty_state.html" with title="No listings yet" description="Your listings will appear here after you create one. Create a listing to add it to your shop." action_url="/catalog/vendor/listings/new/" action_label="Create listing" %}</li>
+          {% endfor %}
+        </ul>
+        {% include "pagination.html" %}
+      {% endif %}
+{% endblock %}

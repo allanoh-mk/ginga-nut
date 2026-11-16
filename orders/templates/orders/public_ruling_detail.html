@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Public ruling {{ ruling.pk }} · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Public dispute outcome</p><h1>Ruling {{ ruling.pk }}</h1></header>
+<dl class="detail-list"><div><dt>Category</dt><dd>{{ ruling.category.name }}</dd></div><div><dt>Amount band</dt><dd class="amount">{{ ruling.amount_band }}</dd></div><div><dt>Outcome</dt><dd>{% include "components/status_pill.html" with state=ruling.outcome label=ruling.get_outcome_display %}</dd></div><div><dt>Published</dt><dd><time datetime="{{ ruling.created_at|date:'c' }}">{{ ruling.created_at|date:"Y-m-d H:i" }} UTC</time></dd></div></dl>
+<section aria-labelledby="ruling-reason"><h2 id="ruling-reason">Published reason</h2><p>{{ ruling.reason }}</p></section>
+<p>This public record contains no account names or attachments.</p><p><a href="{% url 'orders:public-rulings' %}">Return to public rulings</a></p>
+{% endblock %}

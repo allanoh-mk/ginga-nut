@@ -1,0 +1,13 @@
+[Unit]
+Description=Run Kola Market order scheduler
+After=network.target
+
+[Service]
+Type=oneshot
+User=kola-market
+Group=kola-market
+WorkingDirectory=/opt/kola-market
+EnvironmentFile=/etc/kola-market/market.env
+ExecStart=/opt/kola-market/.venv/bin/python /opt/kola-market/manage.py run_scheduler
+StandardOutput=journal
+StandardError=journal

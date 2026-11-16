@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Sign out · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Account</p><h1>Sign out</h1><p>End this session on this device?</p></header>
+<form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}{% include "components/button.html" with label="Sign out" variant="primary" type="submit" %} <a class="button button--secondary" href="{% url 'accounts:profile' %}">Keep me signed in</a></form>
+{% endblock %}

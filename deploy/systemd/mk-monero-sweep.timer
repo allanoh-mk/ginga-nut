@@ -1,0 +1,11 @@
+[Unit]
+Description=Sweep Monero deposit subaddresses every 15 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=15min
+AccuracySec=30s
+Unit=mk-monero-sweep.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Proof of reserves · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Public ledger report</p><h1>Proof of reserves</h1><p>Reported reserve values are compared with positive customer, vendor, and escrow liabilities recorded in the ledger.</p></header>
+{% if latest %}
+  <section class="balance-strip" aria-label="Latest reserve snapshot">
+    <div class="balance-strip__item"><span>Coverage ratio</span><strong class="amount">{% if latest.liability_base_units %}{{ latest.ratio|floatformat:2 }}:1{% else %}Not measurable{% endif %}</strong></div>
+    <div class="balance-strip__item"><span>Last run</span><strong><time datetime="{{ latest.created_at|date:'c' }}">{{ latest.created_at|date:"Y-m-d H:i" }} UTC</time></strong></div>
+  </section>
+  <dl class="detail-list"><div><dt>Ledger liabilities</dt><dd class="amount">{{ latest.liability_base_units|intcomma }} base units</dd></div><div><dt>Hot reserves</dt><dd class="amount">{{ latest.hot_balance_base_units|intcomma }} base units</dd></div><div><dt>Cold reserves</dt><dd class="amount">{{ latest.cold_balance_base_units|intcomma }} base units</dd></div></dl>
+  {% if latest.below_warning_threshold %}<p>{% include "components/status_pill.html" with state="DISPUTED" label="Below 1.30:1 operating threshold" %}</p>{% else %}<p>{% include "components/status_pill.html" with state="FINALIZED" label="At or above 1.30:1 operating threshold" %}</p>{% endif %}
+{% else %}
+  {% include "components/empty_state.html" with title="No reserve snapshot yet" description="The latest ratio and run time will appear after the scheduled reserve report runs." %}
+{% endif %}
+
+<section class="guide-section" aria-labelledby="integrity-heading"><h2 id="integrity-heading">Per-chain reserve integrity</h2>
+{% if latest_integrity %}<p>Last run: <time datetime="{{ latest_integrity.created_at|date:'c' }}">{{ latest_integrity.created_at|date:"Y-m-d H:i" }} UTC</time></p>
+  <ul class="plain-list">{% for chain, result in latest_integrity.results.items %}<li class="listing-card"><h3>{{ chain }} · {% if result.status == "unmeasurable" %}Unmeasurable{% elif result.status == "shortfall" %}Shortfall{% elif result.status == "no_liability" %}No tracked liability{% else %}Measured{% endif %}</h3>
+  {% if result.status == "unmeasurable" %}<p>{% if result.reason == "balance_adapter_missing" %}Balance adapter is missing for this chain. It is unmeasurable, not zero.{% else %}Valuation is unmeasurable because current rates are missing or stale.{% endif %}</p>
+  {% else %}<p>Coverage ratio: <strong class="amount">{% if result.coverage_ratio %}{{ result.coverage_ratio|floatformat:2 }}:1{% else %}—{% endif %}</strong></p><p>Tracked liability: <span class="amount">{{ result.expected_units|intcomma }} {{ result.unit }} units</span>. Reported balance: <span class="amount">{{ result.wallet_balance_units|intcomma }} {{ result.unit }} units</span>.</p>{% endif %}</li>{% endfor %}</ul>
+{% else %}<p>No chain measurement is recorded yet. Measurements will appear after the reserve-integrity job runs.</p>{% endif %}</section>
+
+<section class="guide-section" aria-labelledby="history-heading"><h2 id="history-heading">Snapshot history</h2>
+{% if history %}<div class="table-wrap" role="region" aria-label="Reserve snapshot history" tabindex="0"><table class="data-table"><caption>{{ history.paginator.count }} reports</caption><thead><tr><th scope="col">Run time</th><th scope="col">Liabilities</th><th scope="col">Reserves</th><th scope="col">Ratio</th></tr></thead><tbody>{% for snapshot in history %}<tr><td data-label="Run time"><time datetime="{{ snapshot.created_at|date:'c' }}">{{ snapshot.created_at|date:"Y-m-d H:i" }} UTC</time></td><td class="amount" data-label="Liabilities">{{ snapshot.liability_base_units|intcomma }}</td><td class="amount" data-label="Reserves">{{ snapshot.reserve_total_base_units|intcomma }}</td><td class="amount" data-label="Ratio">{% if snapshot.liability_base_units %}{{ snapshot.ratio|floatformat:2 }}:1{% else %}—{% endif %}</td></tr>{% empty %}<tr><td colspan="4">Snapshots will appear here after reserve reports run.</td></tr>{% endfor %}</tbody></table></div>
+  {% include "components/pagination.html" with page_obj=history pagination_query=pagination_query %}
+{% else %}{% include "components/empty_state.html" with title="No snapshots" description="Daily reserve snapshots will appear here after the report runs." %}{% endif %}
+</section>
+<p class="field__help">Daily reserve totals use configured hot and cold values. Chain measurements use provider-reported balances. Missing or stale measurements remain unmeasurable.</p>
+{% endblock %}

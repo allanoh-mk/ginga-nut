@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Review dispute {{ dispute.pk }}{% endblock %}
+{% block content %}
+<h1>Review dispute {{ dispute.pk }}</h1>
+      <p>Order {{ dispute.order_id }}</p>
+      <p>Reason: {{ dispute.reason }}</p>
+      <h2>Evidence</h2>
+      <ul>
+        {% for item in evidence %}
+          <li>
+            {{ item.get_kind_display }} — {{ item.description }} — submitted by {{ item.submitted_by.username }}
+            <a href="{% url 'orders:evidence-download' item.pk %}">Download attachment</a>
+          </li>
+        {% empty %}
+          <li>No evidence submitted.</li>
+        {% endfor %}
+      </ul>
+      <h2>Public ruling</h2>
+      <p>The public record includes the amount band, category, ruling, and the reason you enter. Party names and evidence remain private.</p>
+      {% if existing_ruling %}
+        <p>A ruling has already been published.</p>
+      {% else %}
+      <form method="post">
+          {% csrf_token %}
+          <fieldset><legend>Ruling details</legend>{{ form.as_div }}</fieldset>
+          <button type="submit">Publish ruling</button>
+        </form>
+      {% endif %}
+      <p><a href="{% url 'orders:dispute-queue' %}">Back to queue</a></p>
+{% endblock %}

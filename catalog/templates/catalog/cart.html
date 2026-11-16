@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Cart · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Shopping</p><h1>Cart</h1></header>
+{% if error %}<p class="flash flash--error" role="alert">{{ error }}</p>{% endif %}
+{% if vendor_groups %}
+  {% for group in vendor_groups %}<section class="guide-section" aria-labelledby="vendor-{{ group.vendor.pk }}"><h2 id="vendor-{{ group.vendor.pk }}">{{ group.vendor.user.username }}</h2><ul class="plain-list">{% for item in group.items %}<li class="listing-card"><h3><a href="{% url 'catalog:listing' item.listing.pk %}">{{ item.listing.title }}</a></h3><p>Quantity: {{ item.quantity }} · <span class="amount">{{ item.subtotal }} base units</span></p><form method="post" action="{% url 'catalog:cart_update' %}">{% csrf_token %}<input type="hidden" name="listing_id" value="{{ item.listing.pk }}"><div class="field"><label for="quantity-{{ item.listing.pk }}">Quantity</label><input id="quantity-{{ item.listing.pk }}" name="quantity" type="number" min="0" max="{{ item.listing.stock }}" value="{{ item.quantity }}"></div>{% include "components/button.html" with label="Update quantity" variant="secondary" type="submit" %}<p class="field__help">Enter 0 to remove this listing.</p></form></li>{% endfor %}</ul><p>Vendor subtotal: <strong class="amount">{{ group.subtotal }} base units</strong></p></section>{% endfor %}
+  <section class="balance-strip cart-total" aria-label="Cart total"><div class="balance-strip__item"><span>Total</span><strong class="amount">{{ total }} base units</strong></div></section>
+  <p class="component-row">{% include "components/button.html" with label="Continue to checkout" variant="primary" href="/catalog/checkout/confirm/" %}{% include "components/button.html" with label="Continue browsing" variant="secondary" href="/catalog/" %}</p>
+{% else %}{% include "components/empty_state.html" with title="Your cart is empty" description="Listings will appear here after you add them. Browse the catalog to add a listing." action_label="Browse listings" action_url="/catalog/" %}{% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Deposit conversion quote · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Deposit conversion</p><h1>Quote and convert</h1><p>Quotes use the latest saved rate sources and remain valid for 10 minutes.</p></header>
+<dl class="detail-list"><div><dt>Chain</dt><dd>{{ deposit.address.get_chain_display }}</dd></div><div><dt>Transaction</dt><dd class="mono">{{ deposit.transaction_id }}</dd></div><div><dt>Deposit amount</dt><dd class="amount">{{ deposit.amount_atomic }} atomic units</dd></div><div><dt>Confirmations</dt><dd>{{ deposit.confirmations }}</dd></div></dl>
+{% if error %}<p class="flash flash--error" role="alert">{{ error }} Request a fresh quote or check the deposit state.</p>{% endif %}
+{% if preview and quote %}<section class="guide-section" aria-labelledby="quote-summary"><h2 id="quote-summary">Quote summary</h2><dl class="detail-list"><div><dt>Gross value</dt><dd class="amount">{{ preview.gross }} base units</dd></div><div><dt>Market fee · 3%</dt><dd class="amount">{{ preview.fee }} base units</dd></div><div><dt>Net to available balance</dt><dd class="amount">{{ preview.net }} base units</dd></div><div><dt>Quote expires</dt><dd><time datetime="{{ quote.locked_until|date:'c' }}">{{ quote.locked_until|date:"Y-m-d H:i:s" }} UTC</time></dd></div></dl><form method="post">{% csrf_token %}<input type="hidden" name="action" value="convert"><input type="hidden" name="quote_id" value="{{ quote.pk }}">{% include "components/button.html" with label="Confirm conversion" variant="primary" type="submit" %}</form></section>
+{% else %}<p>A quote is issued for this confirmed deposit. Review the net amount and fee before confirming.</p><form method="post">{% csrf_token %}<input type="hidden" name="action" value="quote">{% include "components/button.html" with label="Get conversion quote" variant="primary" type="submit" %}</form>{% endif %}
+<p><a href="{% url 'accounts:deposit_history' %}">Return to deposit history</a></p>
+{% endblock %}

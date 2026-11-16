@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the encrypted Kola Market database backup daily
+
+[Timer]
+OnCalendar=*-*-* 03:00:00 UTC
+Persistent=true
+AccuracySec=1min
+Unit=kola-backup.service
+
+[Install]
+WantedBy=timers.target

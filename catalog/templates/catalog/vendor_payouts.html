@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Payouts · Vendor{% endblock %}
+{% block content %}
+<p class="eyebrow">Vendor workspace</p><h1>Payouts</h1>
+<p>Vendor bond: <span class="amount">{{ profile.bond_amount }} base units</span>.</p>
+<p>Withdrawals are requested from the balance page. Their status appears here.</p>
+<table><caption>Withdrawal requests</caption><thead><tr><th scope="col">Requested</th><th scope="col">Amount</th><th scope="col">Chain</th><th scope="col">State</th></tr></thead><tbody>
+{% for payout in payouts %}<tr><td data-label="Requested"><time datetime="{{ payout.created_at|date:'c' }}">{{ payout.created_at|date:"Y-m-d H:i" }}</time></td><td class="amount" data-label="Amount">{{ payout.amount_base_units }} base units</td><td data-label="Chain">{{ payout.get_chain_display }}</td><td data-label="State">{% include "components/status_pill.html" with state=payout.state label=payout.get_state_display %}</td></tr>
+{% empty %}<tr><td colspan="4">No payout requests. Requests will appear here after you request a withdrawal.</td></tr>{% endfor %}
+</tbody></table>
+{% include "components/pagination.html" %}
+<p><a href="{% url 'accounts:withdrawals' %}">Request a withdrawal</a></p>
+{% endblock %}

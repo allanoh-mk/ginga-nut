@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Delete listing · Vendor{% endblock %}
+{% block content %}
+<p class="eyebrow">Vendor workspace</p><h1>Delete listing</h1>
+<p>Delete “{{ listing.title }}”? It will no longer appear in the catalog.</p>
+<form method="post">{% csrf_token %}<fieldset><legend>Confirm listing deletion</legend><button type="submit">Delete listing</button><a class="button button--secondary" href="{% url 'catalog:vendor-edit-listing' listing.pk %}">Keep listing</a></fieldset></form>
+{% endblock %}

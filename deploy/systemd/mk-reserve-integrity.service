@@ -1,0 +1,13 @@
+[Unit]
+Description=Check per-chain reserve integrity
+After=network.target tor.service monerod.service
+
+[Service]
+Type=oneshot
+User=kola
+Group=kola
+WorkingDirectory=/opt/kola
+EnvironmentFile=/opt/kola/.env
+ExecStart=/opt/kola/.venv/bin/python /opt/kola/manage.py reserve_integrity
+StandardOutput=journal
+StandardError=journal

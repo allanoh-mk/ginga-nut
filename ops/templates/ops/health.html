@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Service health · Operations{% endblock %}
+{% block content %}<p class="eyebrow">Staff only · Operations</p><h1>Service health</h1>
+{% if healthy %}<p class="status-note">All checked services responded.</p>{% else %}<p class="status-note status-note--danger">One or more services did not respond.</p>{% endif %}
+<ul>{% for name, ok, detail in checks %}<li><strong>{{ name }}</strong> · {% if ok %}Healthy{% else %}Unavailable{% endif %} · {{ detail }}</li>{% empty %}<li>No health checks have run.</li>{% endfor %}</ul>
+<p><a href="{% url 'ops:dashboard' %}">Return to operations</a></p>{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Verify payout address{% endblock %}
+{% block content %}
+<h1>Verify payout address ownership</h1>
+      <p>Sign this exact message with the wallet that controls {{ challenge.payout_address.address }}.</p>
+      <p>Do not send a transaction and never share your private key or seed phrase.</p>
+      <label for="payout-challenge">Message to sign</label>
+      <textarea id="payout-challenge" rows="8" readonly>{{ challenge.message_to_sign }}</textarea>
+      {% if form.errors %}<div role="alert">{{ form.errors }}</div>{% endif %}
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Verify signature</button>
+      </form>
+      <p>This challenge expires after five minutes and can be used once.</p>
+      <p><a href="{% url 'accounts:payout_addresses' %}">Cancel</a></p>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Maker approval queue · Operations{% endblock %}
+{% block content %}<p class="eyebrow">Staff only</p><h1>Maker approval queue</h1>
+<p>These maker applications are awaiting approval. Approval enables vendor listing tools.</p>
+<table><caption>Pending makers</caption><thead><tr><th scope="col">Maker</th><th scope="col">Bond</th><th scope="col">Applied</th><th scope="col">Action</th></tr></thead><tbody>
+{% for listing in listings %}<tr><th scope="row"><a href="{% url 'catalog:listing' listing.pk %}">{{ listing.title }}</a></th><td data-label="Bond">{{ listing.vendor.user.username }}</td><td data-label="Applied">{{ listing.category.name }}</td><td data-label="Action"><form method="post" action="{% url 'catalog:maker-approve' listing.pk %}">{% csrf_token %}<button type="submit">Approve listing</button></form></td></tr>{% empty %}<tr><td colspan="4">No listings await maker review. Vendor listings will appear here after submission.</td></tr>{% endfor %}
+</tbody></table>{% include "components/pagination.html" %}{% endblock %}

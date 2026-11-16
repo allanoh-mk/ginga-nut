@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Verify wallet ownership{% endblock %}
+{% block content %}
+<h1>Verify wallet ownership</h1>
+      <p>In your TRON wallet, sign the exact message below as plain text. Do not send a transaction.</p>
+      <p>Check that the message shows the address you intend to link. Never enter or share a seed phrase or private key.</p>
+      <label for="wallet-challenge">Message to sign</label>
+      <textarea id="wallet-challenge" rows="8" readonly>{{ challenge.message_to_sign }}</textarea>
+      {% if form.errors %}<div role="alert">{{ form.errors }}</div>{% endif %}
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Verify signature</button>
+      </form>
+      <p>This challenge expires after five minutes and can be used once.</p>
+      <p><a href="{% url 'accounts:wallets' %}">Cancel and return to wallets</a></p>
+{% endblock %}

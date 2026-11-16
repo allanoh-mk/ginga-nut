@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Search listings · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading search-summary"><p class="eyebrow">Catalog</p><h1>Search listings</h1></header>
+<form class="catalog-search" method="get"><fieldset><legend>Search filters</legend>{% for field in form %}{% include "components/form_field.html" with field=field %}{% endfor %}{% include "components/button.html" with label="Search" variant="primary" type="submit" %}</fieldset></form>
+{% if form.is_valid %}<p class="result-count mono">{{ listings.paginator.count }} listings</p>{% if listings %}<ul class="listing-grid">{% for listing in listings %}{% include "catalog/_listing_card.html" with listing=listing %}{% endfor %}</ul>{% include "pagination.html" %}{% else %}{% include "components/empty_state.html" with title="No matching listings" description="Listings matching these filters will appear here. Change the search terms or category to see more results." %}{% endif %}{% else %}<p class="flash flash--error" role="alert">Search filters could not be read. Correct the fields and search again.</p>{% endif %}
+{% endblock %}

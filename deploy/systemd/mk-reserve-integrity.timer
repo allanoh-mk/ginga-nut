@@ -1,0 +1,11 @@
+[Unit]
+Description=Check per-chain reserve integrity every 15 minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+AccuracySec=30s
+Unit=mk-reserve-integrity.service
+
+[Install]
+WantedBy=timers.target

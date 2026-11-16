@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Deposit history · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Balance</p><h1>Deposit history</h1><p>Observed deposits and their current confirmation state.</p></header>
+<p><a href="{% url 'accounts:deposits' %}">Manage deposit addresses</a></p>
+{% if page_obj %}
+  <div class="table-wrap" role="region" aria-label="Deposit history" tabindex="0"><table class="data-table"><caption>{{ page_obj.paginator.count }} deposits</caption><thead><tr><th scope="col">Chain</th><th scope="col">Transaction</th><th scope="col">Amount</th><th scope="col">State</th><th scope="col">Confirmations</th><th scope="col">Received</th><th scope="col">Action</th></tr></thead><tbody>
+  {% for deposit in page_obj %}
+    <tr class="{% if deposit.state == 'seen' or deposit.state == 'confirming' %}is-pending{% endif %}"><td data-label="Chain">{{ deposit.address.get_chain_display }}</td><td data-label="Transaction"><code>{{ deposit.transaction_id }}</code></td><td class="amount" data-label="Amount">{{ deposit.amount_atomic }} atomic units</td><td data-label="State">{% include "components/status_pill.html" with state=deposit.state label=deposit.get_state_display %}</td><td data-label="Confirmations">{{ deposit.confirmations }}</td><td data-label="Received"><time datetime="{{ deposit.created_at|date:'c' }}">{{ deposit.created_at|date:"Y-m-d H:i" }} UTC</time></td><td data-label="Action">{% if deposit.state == 'confirmed' and not deposit.conversion_processed_at %}<a href="{% url 'accounts:deposit_quote_convert' deposit.pk %}">Get quote</a>{% elif deposit.state == 'credited' %}Converted{% else %}—{% endif %}</td></tr>
+  {% empty %}<tr><td colspan="7">Deposits will appear after a provider detects a transaction.</td></tr>{% endfor %}
+  </tbody></table></div>
+  {% include "components/pagination.html" with page_obj=page_obj pagination_query=pagination_query %}
+{% else %}{% include "components/empty_state.html" with title="No deposits yet" description="Deposits will appear here after a transaction is detected at a requested address." action_label="View deposit addresses" action_url="/accounts/profile/deposits/" %}{% endif %}
+{% endblock %}

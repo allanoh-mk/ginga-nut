@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Confirm checkout · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Checkout</p><h1>Confirm order details</h1><p>Checkout creates one draft order for each listing. Fund each order from your balance to move it into escrow.</p></header>
+{% if not items %}{% include "components/empty_state.html" with title="Your cart is empty" description="Cart items will appear here after you add listings. Browse the catalog to begin." action_label="Browse listings" action_url="/catalog/" %}
+{% else %}
+{% if form.non_field_errors %}<p class="flash flash--error" role="alert">{{ form.non_field_errors }}</p>{% endif %}
+{% if available_balance is not None %}<p>Available balance: <span class="amount">{{ available_balance }} base units</span>. Cart total: <span class="amount">{{ total }} base units</span>.</p>{% if available_balance < total %}<p class="flash flash--error" role="status">The balance is below the cart total. Add funds from the <a href="{% url 'accounts:deposits' %}">deposit page</a> before funding these orders.</p>{% endif %}{% endif %}
+<section class="guide-section" aria-labelledby="delivery-summary"><h2 id="delivery-summary">Delivery and finalization</h2><ul class="plain-list">{% for item in items %}<li class="listing-card"><strong>{{ item.listing.title }}</strong> · {{ item.listing.vendor.user.username }}<p>{% if item.listing.delivery_zone_id %}City delivery · finalizes 24 hours after delivery{% else %}Domestic post · finalizes 7 days after delivery{% endif %}</p></li>{% endfor %}</ul></section>
+<section class="guide-section"><h2>Escrow</h2><p>Funding moves the order amount from your available balance into escrow. Escrow is released after delivery is confirmed and the lane’s finalization timer ends, unless a dispute is opened first.</p></section>
+<form method="post"><fieldset><legend>Delivery contact</legend>{% csrf_token %}{% include "components/form_field.html" with field=form.shipping_address %}{% include "components/form_field.html" with field=form.shipping_phone %}<p class="field__help">The delivery address and phone number are encrypted at rest in the database.</p>{% include "components/button.html" with label="Place orders" variant="primary" type="submit" %}</fieldset></form>
+{% endif %}
+{% endblock %}

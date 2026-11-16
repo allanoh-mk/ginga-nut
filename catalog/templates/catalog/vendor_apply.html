@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Become a vendor{% endblock %}
+{% block content %}
+<h1>Apply to sell</h1>
+      <p>Create a vendor profile. An admin must approve it before you can publish listings.</p>
+      <p>The profile includes a separate bond balance. Add a bond after your application is created.</p>
+      <form method="post">
+        {% csrf_token %}
+        <fieldset><legend>Vendor application</legend>
+          <p>Submitting creates a pending profile and a bond account.</p>
+          <button type="submit">Submit vendor application</button>
+        </fieldset>
+      </form>
+{% endblock %}

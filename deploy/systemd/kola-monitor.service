@@ -1,0 +1,20 @@
+[Unit]
+Description=Poll Kola Market health endpoint every 30 seconds
+After=network.target
+
+[Service]
+Type=simple
+User=kola
+Group=kola
+WorkingDirectory=/opt/kola
+EnvironmentFile=/etc/kola/monitor.env
+ExecStart=/opt/kola/deploy/kola-monitor.sh
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Kola Market Redis queue worker
+After=network.target redis-server.service postgresql.service
+Requires=redis-server.service postgresql.service
+
+[Service]
+Type=simple
+User=kola
+Group=kola
+WorkingDirectory=/opt/kola
+EnvironmentFile=/opt/kola/.env
+ExecStart=/opt/kola/.venv/bin/python /opt/kola/manage.py run_market_worker
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

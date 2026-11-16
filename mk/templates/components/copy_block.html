@@ -1,0 +1,6 @@
+<div class="copy-block">
+  <p class="field__label" id="{{ id|default:'copy-block-label' }}">{{ label }}</p>
+  <div class="copy-block__row"><pre id="copy-value-{{ id|default:'address' }}" class="mono-block" aria-labelledby="{{ id|default:'copy-block-label' }}">{{ value }}</pre><button class="button button--secondary" type="button" data-copy-target="copy-value-{{ id|default:'address' }}">Copy</button></div>
+  <span class="copy-status" aria-live="polite"></span>
+  {% if help_text %}<p class="field__help">{{ help_text }}</p>{% endif %}
+</div>

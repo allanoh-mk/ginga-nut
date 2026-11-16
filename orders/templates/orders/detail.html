@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.pk }}{% endblock %}
+{% block content %}
+{% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <h1>Order {{ order.pk }}</h1>
+      <p>Status: {{ order.get_state_display }}</p>
+      {% if staff_view %}
+        <section aria-labelledby="staff-order-actions-heading">
+          <h2 id="staff-order-actions-heading">Staff order controls</h2>
+          {% if staff_transition_targets %}
+          <form method="post" action="{% url 'ops:order-force-transition' order.pk %}">
+            {% csrf_token %}
+            <label for="target-state">Force next state</label>
+            <select id="target-state" name="target_state" required>
+              {% for state in staff_transition_targets %}
+                <option value="{{ state }}">{{ state }}</option>
+              {% endfor %}
+            </select>
+            <label for="transition-reason">Reason</label>
+            <textarea id="transition-reason" name="reason" rows="3" required></textarea>
+            <button type="submit">Record staff transition</button>
+          </form>
+          {% else %}
+            <p>No safe staff override is available for this state. Use its standard workflow.</p>
+          {% endif %}
+          <h3>Staff transition history</h3>
+          <ul>
+            {% for transition in staff_transition_logs %}
+              <li>{{ transition.created_at }} · {{ transition.actor.username }}:
+                {{ transition.from_state }} → {{ transition.to_state }} — {{ transition.reason }}
+              </li>
+            {% empty %}
+              <li>No staff transitions recorded.</li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+      <p>Payment method: {{ order.get_payment_method_display }}</p>
+      {% if order.delivery_zone %}
+        <p>Delivery zone: {{ order.delivery_zone }}</p>
+      {% endif %}
+      {% if order.courier_reference %}
+        <p>Courier reference: {{ order.courier_reference }}</p>
+      {% endif %}
+      {% if order.shipping_address %}
+        <p>Delivery address: {{ order.shipping_address }}</p>
+      {% endif %}
+      {% if order.shipping_phone %}
+        <p>Delivery phone: {{ order.shipping_phone }}</p>
+      {% endif %}
+      {% if order.pack_photo %}
+        <p>Pack photo: attached and stored privately on disk.</p>
+      {% endif %}
+      {% if pod_token %}
+        <section>
+          <h2>Proof-of-delivery token</h2>
+          <p>Show this one-time token to the buyer. It expires six hours after dispatch.</p>
+          <output>{{ pod_token }}</output>
+        </section>
+      {% endif %}
+
+      {% if order.vendor and "pack" in allowed_actions and request.user.pk == order.vendor.user_id %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'orders:pack' order.pk %}">
+          {% csrf_token %}
+          <label for="pack-photo">Pack photo</label>
+          <input id="pack-photo" type="file" name="photo" accept="image/jpeg,image/png,image/webp" required>
+          <button type="submit">Pack order</button>
+        </form>
+      {% endif %}
+
+      {% if "fund" in allowed_actions and request.user.pk == order.buyer_id %}
+        {% if order.payment_method == "ledger" %}
+          <form method="post" action="{% url 'orders:fund' order.pk %}">
+            {% csrf_token %}
+            <button type="submit">Fund from marketplace balance</button>
+          </form>
+          <form method="post" action="{% url 'orders:start-monero-escrow' order.pk %}">
+            {% csrf_token %}
+            <button type="submit">Fund with Monero multisig</button>
+          </form>
+        {% endif %}
+      {% endif %}
+
+      {% if order.payment_method == "xmr_multisig" and order.monero_escrow %}
+        <section>
+          <h2>Monero multisig escrow</h2>
+          <p>Escrow status: {{ order.monero_escrow.get_state_display }}</p>
+          {% if order.monero_escrow.deposit_address %}
+            <p>Send at least the quoted amount to the multisig address below.</p>
+            <p>Required XMR atomic units: {{ order.monero_escrow.expected_amount_atomic }}</p>
+            <output>{{ order.monero_escrow.deposit_address }}</output>
+            {% if order.monero_escrow.rate_quote %}
+              <p>Quote expires: {{ order.monero_escrow.rate_quote.locked_until }}</p>
+            {% endif %}
+          {% endif %}
+          {% if order.monero_escrow.state == "settlement_pending" %}
+            <p>The settlement proposal is awaiting approval from two independent signers.</p>
+          {% endif %}
+          {% if order.monero_escrow.settlement_transaction_id %}
+            <p>Settlement transaction: {{ order.monero_escrow.settlement_transaction_id }}</p>
+          {% endif %}
+          <p>Kola does not hold participant signing keys. The external signer service must require participant authorization for every spend.</p>
+        </section>
+      {% endif %}
+
+      {% if "cancel" in allowed_actions and request.user.pk == order.buyer_id %}
+        <form method="post" action="{% url 'orders:cancel' order.pk %}">
+          {% csrf_token %}
+          <button type="submit">Cancel order</button>
+        </form>
+      {% endif %}
+
+      {% if order.vendor and "accept" in allowed_actions and request.user.pk == order.vendor.user_id %}
+        <form method="post" action="{% url 'orders:accept' order.pk %}">
+          {% csrf_token %}
+          <button type="submit">Accept order</button>
+        </form>
+      {% endif %}
+
+      {% if order.vendor and "reject" in allowed_actions and request.user.pk == order.vendor.user_id %}
+        <form method="post" action="{% url 'orders:reject' order.pk %}">
+          {% csrf_token %}
+          <button type="submit">Reject order</button>
+        </form>
+      {% endif %}
+
+      {% if order.vendor and "dispatch" in allowed_actions and request.user.pk == order.vendor.user_id %}
+        <form method="post" action="{% url 'orders:dispatch' order.pk %}">
+          {% csrf_token %}
+          <label for="courier-reference">Courier reference</label>
+          <input id="courier-reference" name="courier_reference" maxlength="160" required>
+          <button type="submit">Dispatch order</button>
+        </form>
+      {% endif %}
+
+      {% if not staff_view and "record_delivery" in allowed_actions %}
+        <form method="post" action="{% url 'orders:deliver' order.pk %}">
+          {% csrf_token %}
+          <label for="pod-token">Proof-of-delivery token</label>
+          <input id="pod-token" name="token" maxlength="128" required>
+          <button type="submit">Confirm delivery</button>
+        </form>
+      {% endif %}
+
+      {% if not staff_view and order.state == "DELIVERED" and request.user.pk == order.buyer_id and order.buyer_extensions < 2 %}
+        <form method="post" action="{% url 'orders:extend-finalize' order.pk %}">
+          {% csrf_token %}
+          <button type="submit">Extend finalization deadline</button>
+        </form>
+      {% endif %}
+
+      {% if "open_dispute" in allowed_actions and request.user.pk == order.buyer_id %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'orders:open-dispute' order.pk %}">
+          {% csrf_token %}
+          <h2>Open a dispute</h2>
+          <label for="dispute-reason">Reason</label>
+          <textarea id="dispute-reason" name="reason" rows="4" required></textarea>
+          <label for="evidence-kind">Evidence type</label>
+          <select id="evidence-kind" name="evidence_kind" required>
+            {% for value, label in evidence_choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+          <label for="evidence-description">Evidence note</label>
+          <input id="evidence-description" name="description" maxlength="500">
+          <label for="evidence-file">Evidence attachment</label>
+          <input id="evidence-file" type="file" name="attachment" required>
+          <button type="submit">Submit dispute</button>
+        </form>
+      {% endif %}
+
+      {% if order.state == "DISPUTED" %}
+        <h2>Dispute evidence</h2>
+        <ul>
+          {% for item in order.dispute.evidence.all %}
+            <li>{{ item.get_kind_display }} — {{ item.description }} (submitted {{ item.created_at }})</li>
+          {% empty %}
+            <li>No evidence submitted.</li>
+          {% endfor %}
+        </ul>
+        {% if not staff_view %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'orders:submit-evidence' order.dispute.pk %}">
+          {% csrf_token %}
+          <label for="additional-kind">Evidence type</label>
+          <select id="additional-kind" name="kind" required>
+            {% for value, label in evidence_choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+          <label for="additional-description">Evidence note</label>
+          <input id="additional-description" name="description" maxlength="500">
+          <label for="additional-file">Evidence attachment</label>
+          <input id="additional-file" type="file" name="attachment" required>
+          <button type="submit">Add evidence</button>
+        </form>
+        {% endif %}
+      {% endif %}
+
+      {% if review_form %}
+        <section aria-labelledby="review-order-heading">
+          <h2 id="review-order-heading">Review this order</h2>
+          <form method="post" action="{% url 'orders:submit-review' order.pk %}">
+            {% csrf_token %}
+            {{ review_form.as_div }}
+            <button type="submit">Submit review</button>
+          </form>
+        </section>
+      {% elif order.state == "FINALIZED" and request.user.pk == order.buyer_id and order.review %}
+        <p>You reviewed this order with {{ order.review.rating }} out of 5 stars.</p>
+      {% endif %}
+{% endblock %}

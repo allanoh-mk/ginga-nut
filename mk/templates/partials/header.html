@@ -1,0 +1,32 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="{% url 'home' %}" translate="no"><span class="brand-mark">K</span> Kola</a>
+    <form class="header-search" action="{% url 'catalog:search' %}" method="get" role="search">
+      <label class="sr-only" for="header-search">Search listings</label>
+      <input id="header-search" type="search" name="q" placeholder="Search listings">
+      <button type="submit" aria-label="Search">Search</button>
+    </form>
+    <div class="identity">
+      {% if request.user.is_authenticated %}
+        <span class="role-avatar role-avatar--{{ market_role }}" aria-hidden="true">{{ market_initials }}</span>
+        <span class="identity__text"><strong>{{ request.user.username }}</strong><small class="role-label">{{ market_role }}</small></span>
+        <a class="identity__link" href="{% url 'accounts:profile' %}">Profile</a>
+        <a class="identity__link" href="{% url 'accounts:logout_confirm' %}">Sign out</a>
+      {% else %}
+        <a class="identity__link" href="{% url 'accounts:login' %}">Sign in</a>
+        <a class="button button--secondary identity__join" href="{% url 'accounts:register' %}">Join</a>
+      {% endif %}
+    </div>
+    <details class="mobile-tools">
+      <summary aria-label="Open menu">Menu</summary>
+      <div class="mobile-tools__panel">
+        <form class="header-search" action="{% url 'catalog:search' %}" method="get" role="search">
+          <label class="sr-only" for="mobile-header-search">Search listings</label>
+          <input id="mobile-header-search" type="search" name="q" placeholder="Search listings">
+          <button type="submit">Search</button>
+        </form>
+        {% if request.user.is_authenticated %}<p><a href="{% url 'accounts:profile' %}">{{ request.user.username }}</a></p><a href="{% url 'accounts:logout_confirm' %}">Sign out</a>{% else %}<a href="{% url 'accounts:login' %}">Sign in</a> · <a href="{% url 'accounts:register' %}">Join</a>{% endif %}
+      </div>
+    </details>
+  </div>
+</header>

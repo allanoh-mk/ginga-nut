@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Vendor approval queue{% endblock %}
+{% block content %}
+<h1>Vendor approval queue</h1>
+      <ul>
+        {% for profile in profiles %}
+          <li>
+            {{ profile.user.username }}
+            <form method="post" action="{% url 'catalog:vendor-approve' profile.pk %}">
+              {% csrf_token %}
+              <button type="submit">Approve</button>
+            </form>
+          </li>
+        {% empty %}
+          <li>No vendor profiles are awaiting admin approval.</li>
+        {% endfor %}
+      </ul>
+      {% include "pagination.html" %}
+{% endblock %}

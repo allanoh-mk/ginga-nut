@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Service error{% endblock %}
+{% block content %}
+<h1>Service error</h1>
+<p>The server could not complete this request. Return to the marketplace and try again.</p>
+<p><a href="{% url 'catalog:categories' %}">Browse listings</a></p>
+{% endblock %}

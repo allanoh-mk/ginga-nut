@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+<h1>Page not found</h1>
+<p>This address does not match a page. Check the address or return to the marketplace.</p>
+<p><a href="{% url 'catalog:categories' %}">Browse listings</a></p>
+{% endblock %}

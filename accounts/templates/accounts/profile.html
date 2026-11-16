@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Your profile{% endblock %}
+{% block content %}
+<h1>Your profile</h1>
+      <p>Username: {{ request.user.username }}</p>
+      <p>
+        <a href="{% url 'accounts:wallets' %}">
+          Manage linked wallets ({{ wallet_link_count }} active)
+        </a>
+      </p>
+      <p><a href="{% url 'accounts:payout_addresses' %}">Manage payout address book</a></p>
+      <nav aria-label="Payment account">
+        <a href="{% url 'accounts:deposits' %}">Deposits</a>
+        <a href="{% url 'accounts:deposit_history' %}">Deposit history</a>
+        <a href="{% url 'accounts:withdrawals' %}">Withdrawals</a>
+      </nav>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit">Save session duration</button>
+      </form>
+      <form method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sign out</button>
+      </form>
+      <form method="post" action="{% url 'accounts:regenerate_recovery_codes' %}">
+        {% csrf_token %}
+        <button type="submit">Regenerate recovery codes</button>
+      </form>
+{% endblock %}

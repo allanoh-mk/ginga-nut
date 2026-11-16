@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1>{{ title }}</h1>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>Physical listings only. Digital fulfillment is paused.</p>
+        {{ form.as_div }}
+        <button type="submit">Save listing</button>
+      </form>
+      <p><a href="{% url 'catalog:vendor-dashboard' %}">Back to vendor profile</a></p>
+{% endblock %}

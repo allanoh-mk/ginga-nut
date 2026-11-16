@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Order action · Kola Market{% endblock %}
+{% block content %}
+<h1>Order action failed</h1>
+      {% if message %}<p class="flash flash--error" role="status">{{ message }}{% if insufficient_balance %} Add funds on the <a href="{% url 'accounts:deposits' %}">deposit page</a>, then return to the order to try again.{% endif %}</p>{% endif %}
+      {% if form %}{{ form.as_div }}{% endif %}
+      <p><a href="/catalog/">Return to the marketplace</a></p>
+{% endblock %}

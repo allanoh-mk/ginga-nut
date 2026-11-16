@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading auth-heading"><p class="eyebrow">Account access</p><h1>Sign in</h1><p>Enter your password, then verify with OpenPGP or a recovery code.</p></header>
+{% if locked_out %}<p class="flash flash--error" role="alert">Too many attempts. Try again after the 15-minute lockout.</p>{% endif %}
+{% if message %}<p class="flash flash--error" role="alert">{{ message }}</p>{% endif %}
+<form class="auth-form" method="post" autocomplete="on"><fieldset><legend>Password sign-in</legend>{% csrf_token %}{% if form.non_field_errors %}<div class="field__error" role="alert">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}{% include "components/form_field.html" with field=field %}{% endfor %}{% include "components/button.html" with label="Continue" variant="primary" type="submit" %}</fieldset></form>
+<p><a href="{% url 'accounts:recovery_login' %}">Sign in with a recovery code</a></p>
+<p>Need an account? <a href="{% url 'accounts:register' %}">Create account</a>.</p>
+{% endblock %}

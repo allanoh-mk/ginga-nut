@@ -1,0 +1,37 @@
+<aside class="sidebar" aria-label="Primary">
+  <nav class="sidebar-nav">
+    <span class="sidebar-label">Marketplace</span>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'catalog:categories' %}">Browse categories</a>
+    <a href="{% url 'how-it-works' %}">How it works</a>
+    <span class="sidebar-label">Account</span>
+    {% if request.user.is_authenticated %}
+      <a href="{% url 'orders:history' %}">My orders</a>
+      <a href="{% url 'accounts:balance' %}">Balance</a>
+      <a href="{% url 'accounts:deposits' %}">Deposits</a>
+      <a href="{% url 'accounts:withdrawals' %}">Withdrawals</a>
+      <a href="{% url 'core:notifications' %}">Notifications{% if unread_notification_count %}<span class="notification-badge">{{ unread_notification_count }}</span>{% endif %}</a>
+      {% if market_role == "vendor" %}
+        <span class="sidebar-label">Your shop</span>
+        <a href="{% url 'catalog:vendor-dashboard' %}">Dashboard</a>
+        <a href="{% url 'catalog:vendor-order-queue' %}">Order queue</a>
+        <a href="{% url 'catalog:vendor-payouts' %}">Payouts</a>
+      {% endif %}
+      {% if request.user.is_staff %}
+        <span class="sidebar-label">Operations</span>
+        <a href="{% url 'ops:dashboard' %}">Dashboard</a>
+        <a href="{% url 'ops:withdrawal-approval-queue' %}">Withdrawals</a>
+        <a href="{% url 'orders:dispute-queue' %}">Disputes</a>
+      {% endif %}
+    {% else %}
+      <a href="{% url 'accounts:login' %}">Sign in</a>
+      <a href="{% url 'accounts:register' %}">Create account</a>
+    {% endif %}
+  </nav>
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'catalog:categories' %}">Browse</a>
+    {% if request.user.is_authenticated %}<a href="{% url 'orders:history' %}">Orders</a><a href="{% url 'accounts:balance' %}">Balance</a>{% else %}<a href="{% url 'accounts:login' %}">Orders</a><a href="{% url 'accounts:login' %}">Balance</a>{% endif %}
+    <details><summary>More</summary><div class="more-sheet"><a href="{% url 'how-it-works' %}">How it works</a><a href="{% url 'ops:reserves' %}">Reserves</a><a href="{% url 'ops:canary' %}">Canary</a>{% if request.user.is_authenticated %}<a href="{% url 'accounts:deposits' %}">Deposits</a><a href="{% url 'accounts:withdrawals' %}">Withdrawals</a><a href="{% url 'core:notifications' %}">Notifications</a>{% if market_role == "vendor" %}<a href="{% url 'catalog:vendor-dashboard' %}">Your shop</a><a href="{% url 'catalog:vendor-order-queue' %}">Order queue</a><a href="{% url 'catalog:vendor-payouts' %}">Payouts</a>{% endif %}{% if request.user.is_staff %}<a href="{% url 'ops:dashboard' %}">Operations</a><a href="{% url 'ops:withdrawal-approval-queue' %}">Withdrawals</a><a href="{% url 'orders:dispute-queue' %}">Disputes</a><a href="{% url 'catalog:vendor-approval-queue' %}">Vendors</a><a href="{% url 'catalog:maker-approval-queue' %}">Makers</a>{% endif %}{% else %}<a href="{% url 'accounts:login' %}">Sign in</a><a href="{% url 'accounts:register' %}">Create account</a>{% endif %}</div></details>
+  </nav>
+</aside>

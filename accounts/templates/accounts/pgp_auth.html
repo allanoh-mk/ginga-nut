@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{% if enrollment %}Enroll OpenPGP{% elif regenerating_codes %}Regenerate recovery codes{% else %}Verify OpenPGP{% endif %} · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Account security</p>
+  {% if enrollment %}<h1>Enroll OpenPGP verification</h1><p>Add your public key and sign the current challenge with its matching private key.</p>
+  {% elif regenerating_codes %}<h1>Regenerate recovery codes</h1><p>Verify with your enrolled key or an unused recovery code.</p>
+  {% else %}<h1>Verify your sign-in</h1><p>Sign the current challenge with your enrolled private key.</p>{% endif %}
+</header>
+<p class="flash flash--info">This challenge expires in 5 minutes. Request a new challenge after it expires.</p>
+<section class="challenge-block" aria-labelledby="challenge-label"><h2 id="challenge-label">Text to sign</h2><pre class="mono-block">{{ challenge }}</pre><p>Save this exact text to a file. Create an armored detached signature, then paste the complete signature below.</p><pre class="mono-block">gpg --armor --detach-sign challenge.txt</pre></section>
+<form method="post" autocomplete="off"><fieldset><legend>{% if enrollment %}Public key enrollment{% else %}Signature verification{% endif %}</legend>{% csrf_token %}{% if form.non_field_errors %}<div class="field__error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  {% if enrollment %}{% include "components/form_field.html" with field=form.public_key %}{% endif %}
+  {% include "components/form_field.html" with field=form.signature %}
+  {% if not enrollment %}<p>Or enter one unused recovery code.</p>{% include "components/form_field.html" with field=form.recovery_code %}{% endif %}
+  {% include "components/button.html" with label="Verify and continue" variant="primary" type="submit" %}
+</fieldset></form>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Public dispute rulings · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Dispute outcomes</p><h1>Public rulings</h1><p>Rulings show the category, outcome and amount band. They do not show names or dispute evidence.</p></header>
+{% if rulings %}<ol class="ruling-list">{% for ruling in rulings %}<li class="listing-card"><p class="eyebrow">{{ ruling.category.name }}</p><h2><a href="{% url 'orders:public-ruling' ruling.pk %}">Ruling {{ ruling.pk }}</a></h2><p>Outcome: {% include "components/status_pill.html" with state=ruling.outcome label=ruling.get_outcome_display %}</p><p>Amount band: <span class="amount">{{ ruling.amount_band }}</span></p><time datetime="{{ ruling.created_at|date:'c' }}">Published {{ ruling.created_at|date:"Y-m-d" }}</time></li>{% endfor %}</ol>
+{% include "components/pagination.html" with page_obj=page_obj pagination_query=pagination_query %}
+{% else %}{% include "components/empty_state.html" with title="No public rulings yet" description="Public rulings will appear here after an administrator decides a dispute." %}{% endif %}
+{% endblock %}

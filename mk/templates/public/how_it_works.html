@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}How it works · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Buyer guide</p><h1>How Kola Market works</h1><p>Orders, payments and delivery follow a recorded process.</p></header>
+<ol class="steps-list">
+  <li><h2>Choose a listing</h2><p>Browse active products from approved vendors. Check stock, delivery area and price before checkout.</p></li>
+  <li><h2>Place and fund an order</h2><p>Checkout reserves stock and creates a draft order. Fund it from your available balance. The amount moves into escrow.</p></li>
+  <li><h2>Receive the order</h2><p>The vendor accepts, packs and dispatches the order. Confirm delivery with the one-time code provided by the vendor.</p></li>
+  <li><h2>Escrow is released</h2><p>After delivery, the order finalizes when its delivery timer ends. Open a dispute before then if there is a problem.</p></li>
+</ol>
+<section class="guide-section"><h2>Order protection</h2><details><summary>When are order funds released?</summary><p>Order funds remain in escrow until delivery is confirmed and the finalization period ends, or an administrator rules on a dispute. Finalization releases the vendor share and recorded fees.</p></details><p><a href="{% url 'orders:public-rulings' %}">Read public dispute rulings</a></p></section>
+{% endblock %}

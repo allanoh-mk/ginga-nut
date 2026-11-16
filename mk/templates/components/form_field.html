@@ -1,0 +1,19 @@
+{% if field %}
+<div class="field{% if field.errors %} field--error{% endif %}">
+  {{ field.label_tag }}
+  {{ field }}
+  {% for error_text in field.errors %}<p class="field__error">{{ error_text }}</p>{% endfor %}
+  {% if field.help_text %}<p class="field__help" id="{{ field.id_for_label }}-help">{{ field.help_text }}</p>{% endif %}
+</div>
+{% else %}
+<div class="field{% if error %} field--error{% endif %}{% if disabled %} field--disabled{% endif %}">
+  <label class="field__label" for="{{ id|default:name }}">{{ label }}{% if required %}<span aria-hidden="true"> *</span><span class="sr-only"> (required)</span>{% endif %}</label>
+  {% if textarea %}
+    <textarea class="field__control" id="{{ id|default:name }}" name="{{ name }}" rows="{{ rows|default:4 }}"{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if error %} aria-invalid="true" aria-describedby="{{ id|default:name }}-error{% if help_text %} {{ id|default:name }}-help{% endif %}"{% elif help_text %} aria-describedby="{{ id|default:name }}-help"{% endif %}>{{ value }}</textarea>
+  {% else %}
+    <input class="field__control" id="{{ id|default:name }}" name="{{ name }}" type="{{ type|default:'text' }}" value="{{ value }}"{% if min %} min="{{ min }}"{% endif %}{% if max %} max="{{ max }}"{% endif %}{% if required %} required{% endif %}{% if disabled %} disabled{% endif %}{% if error %} aria-invalid="true" aria-describedby="{{ id|default:name }}-error{% if help_text %} {{ id|default:name }}-help{% endif %}"{% elif help_text %} aria-describedby="{{ id|default:name }}-help"{% endif %}>
+  {% endif %}
+  {% if error %}<p class="field__error" id="{{ id|default:name }}-error">{{ error }}</p>{% endif %}
+  {% if help_text %}<p class="field__help" id="{{ id|default:name }}-help">{{ help_text }}</p>{% endif %}
+</div>
+{% endif %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Kola Market · Local marketplace{% endblock %}
+{% block content %}
+<header class="home-hero">
+  <p class="eyebrow">Local marketplace</p>
+  <h1>Goods from local sellers</h1>
+  <p class="home-hero__copy">Kola Market is a marketplace for buying from approved local vendors. Orders use your Kola balance and stay in escrow until delivery is confirmed or a dispute is decided.</p>
+  <p class="component-row"><a class="button button--primary" href="{% url 'catalog:categories' %}">Browse listings</a><a class="button button--secondary" href="{% url 'how-it-works' %}">How it works</a></p>
+</header>
+<section class="home-trust" aria-label="Order protection"><div><strong>Choose a listing</strong><p>Browse active products from approved vendors.</p></div><div><strong>Place and fund an order</strong><p>Checkout reserves stock and creates a draft order. Fund it from your available balance. The amount moves into escrow.</p></div><div><strong>Same-day delivery</strong><p>Same-day delivery is available in Lagos, Nairobi, Johannesburg and Cape Town for eligible listings.</p></div></section>
+<section class="guide-section" aria-labelledby="home-categories"><h2 id="home-categories">Browse three categories</h2>
+  {% if categories %}<ul class="category-grid category-grid--home">{% for category in categories %}<li><a class="listing-card category-shortcut" href="{% url 'catalog:category' category.slug %}"><svg class="category-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><h3>{{ category.name }}</h3><span class="category-count">{{ category.active_listing_count }} active listing{{ category.active_listing_count|pluralize }}</span></a></li>{% endfor %}</ul>
+  {% else %}{% include "components/empty_state.html" with title="No categories yet" description="Categories will appear here when active listings are available." action_label="Browse categories" action_url="/catalog/" %}{% endif %}
+</section>
+<section class="guide-section" aria-labelledby="same-day"><h2 id="same-day">Same-day delivery</h2><p>Same-day delivery is available in Lagos, Nairobi, Johannesburg and Cape Town for eligible listings.</p></section>
+<p class="home-trust-strip">Same-day delivery is available in Lagos, Nairobi, Johannesburg and Cape Town for eligible listings.</p>
+{% endblock %}

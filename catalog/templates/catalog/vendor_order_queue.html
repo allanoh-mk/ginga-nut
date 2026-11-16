@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Order queue · Vendor{% endblock %}
+{% block content %}
+<p class="eyebrow">Vendor workspace</p><h1>Order queue</h1>
+<p>Orders are sorted by deadline. The remaining time is shown for each order.</p>
+<ol class="record-list">
+  {% for order in orders %}
+    <li class="record-card">
+      <h2><a href="{% url 'orders:detail' order.pk %}">Order {{ order.pk }} · {{ order.listing_title|default:order.listing.title }}</a></h2>
+      <dl class="detail-list"><div><dt>State</dt><dd>{% include "components/status_pill.html" with state=order.state label=order.get_state_display %}</dd></div><div><dt>Deadline</dt><dd><time datetime="{{ order.deadline|date:'c' }}">{{ order.deadline|date:"Y-m-d H:i" }}</time></dd></div><div><dt>Time remaining</dt><dd class="amount">{{ order.remaining_seconds }} seconds</dd></div><div><dt>Buyer</dt><dd>{{ order.buyer.username }}</dd></div><div><dt>Total</dt><dd class="amount">{{ order.total_amount }} base units</dd></div></dl>
+      {% if order.state == "FUNDED" %}
+        <form method="post" action="{% url 'orders:accept' order.pk %}">{% csrf_token %}<button type="submit">Accept order</button></form>
+        <form method="post" action="{% url 'orders:reject' order.pk %}">{% csrf_token %}<button class="button button--secondary" type="submit">Reject order</button></form>
+      {% elif order.state == "ACCEPTED" %}
+        <form method="post" enctype="multipart/form-data" action="{% url 'orders:pack' order.pk %}">{% csrf_token %}<fieldset><legend>Pack order</legend>{{ order.pack_form.as_div }}</fieldset><button type="submit">Save pack photo and mark packed</button></form>
+      {% elif order.state == "PACKED" %}
+        {% if order.pack_photo %}<p class="status-note">Pack photo recorded. Dispatch is available.</p>{% else %}<p class="status-note">Add the pack photo before dispatch.</p>{% endif %}
+        <form method="post" action="{% url 'orders:dispatch' order.pk %}">{% csrf_token %}<fieldset><legend>Dispatch order</legend>{{ order.dispatch_form.as_div }}</fieldset><button type="submit" {% if not order.pack_photo %}disabled aria-disabled="true"{% endif %}>Dispatch order</button></form>
+      {% endif %}
+    </li>
+  {% empty %}
+    {% include "components/empty_state.html" with title="No open orders" description="Orders will appear here after a buyer funds one. Publish an active listing so buyers can order." %}
+  {% endfor %}
+</ol>
+{% endblock %}

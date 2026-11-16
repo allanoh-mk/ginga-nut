@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{{ profile.user.username }} · Vendor{% endblock %}
+{% block content %}
+<header class="vendor-profile-header"><span class="role-avatar role-avatar--vendor" aria-hidden="true">{{ profile.user.username|slice:":1"|upper }}</span><div><p class="eyebrow">Approved vendor</p><h1>{{ profile.user.username }}</h1>{% include "components/badge.html" with label="Approved" variant="success" %}</div></header>
+<dl class="detail-list"><div><dt>Completed orders</dt><dd>{{ completed_count }}</dd></div><div><dt>Rating</dt><dd>{% if rating is None %}No ratings{% else %}{{ rating|floatformat:1 }} out of 5{% endif %}</dd></div><div><dt>Member since</dt><dd><time datetime="{{ profile.created_at|date:'c' }}">{{ profile.created_at|date:"Y-m-d" }}</time></dd></div><div><dt>Bond status</dt><dd>{% if profile.bond_amount > 0 %}Bond recorded{% else %}No bond recorded{% endif %}</dd></div></dl>
+<h2>Active listings</h2><ul class="listing-grid">{% for listing in listings %}<li><a href="{% url 'catalog:listing' listing.pk %}">{{ listing.title }}</a> · {{ listing.price }} base units · {{ listing.category.name }}</li>{% empty %}<li>No active listings. Active listings will appear here after this vendor publishes one.</li>{% endfor %}</ul>
+{% endblock %}

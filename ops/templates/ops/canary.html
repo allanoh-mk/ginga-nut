@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Public canary · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Public service statement</p><h1>Canary</h1><p>The statement and signature are generated from the configured operator key.</p></header>
+{% if canary %}
+  <section class="guide-section" aria-labelledby="canary-statement"><h2 id="canary-statement">Signed statement</h2>{% include "components/copy_block.html" with id="canary-statement-text" label="Statement · exact UTF-8 text" value=canary.statement %}
+    <dl class="detail-list"><div><dt>Key fingerprint · SHA-256</dt><dd class="mono">{{ canary.fingerprint }}</dd></div><div><dt>Last signed</dt><dd><time datetime="{{ signed_at|date:'c' }}">{{ signed_at|date:'Y-m-d H:i:s' }} UTC</time></dd></div></dl>
+    {% include "components/copy_block.html" with id="canary-signature" label="Detached signature · base64" value=canary.signature %}{% include "components/copy_block.html" with id="canary-public-key" label="Public key · base64" value=canary.public_key %}
+    <p>Verify the signature over the exact statement text. Pin the fingerprint through an independent source.</p>
+  </section>
+{% else %}
+  {% include "components/empty_state.html" with title="Canary is not configured" description="Canary statement is not configured. A signed statement will appear here after the operator configures the statement and signing key." %}
+{% endif %}
+{% endblock %}

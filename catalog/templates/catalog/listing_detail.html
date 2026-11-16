@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ listing.title }} · Kola Market{% endblock %}
+{% block content %}
+<p><a href="{% url 'catalog:category' listing.category.slug %}">{{ listing.category.name }}</a></p>
+<header class="page-heading"><p class="eyebrow">{{ listing.category.name }}</p><h1>{{ listing.title }}</h1></header>
+<div class="listing-detail-layout">
+  <div class="listing-detail-main">
+    {% if listing.image %}<figure class="listing-image"><img src="{{ listing.image.url }}" alt="{{ listing.title }}" width="1200" height="900" decoding="async"><figcaption>{{ listing.title }}</figcaption></figure>{% endif %}
+    <section class="guide-section"><h2>Description</h2><p>{{ listing.description|linebreaksbr }}</p></section>
+    <section class="guide-section" aria-labelledby="specification-heading"><h2 id="specification-heading">Details</h2><dl class="detail-list"><div><dt>Stock</dt><dd>{{ listing.stock }} available</dd></div><div><dt>Category</dt><dd>{{ listing.category.name }}</dd></div><div><dt>Vendor</dt><dd><a href="{% url 'catalog:vendor-public-profile' listing.vendor.user.username %}">{{ listing.vendor.user.username }}</a></dd></div></dl></section>
+    <section class="guide-section" aria-labelledby="rating-heading"><h2 id="rating-heading">Reviews</h2>{% if listing.review_count %}<p>Average rating: {{ listing.average_rating|floatformat:1 }} out of 5 · {{ listing.review_count }} review{{ listing.review_count|pluralize }}</p>{% else %}<p>No reviews yet. Reviews will appear after buyers review finalized orders.</p>{% endif %}<p><a href="{% url 'catalog:listing-reviews' listing.pk %}">Read reviews</a></p></section>
+  </div>
+  <aside class="listing-buy-rail"><p class="price listing-detail-price">{{ listing.price_base }} base</p><p><a href="{% url 'catalog:vendor-public-profile' listing.vendor.user.username %}">{{ listing.vendor.user.username }}</a></p>{% if listing.stock %}<form method="post" action="{% url 'catalog:cart_add' listing.pk %}"><fieldset><legend>Add to cart</legend>{% csrf_token %}<div class="field"><label for="quantity">Quantity</label><input id="quantity" name="quantity" type="number" min="1" max="{{ listing.stock }}" value="1" required></div>{% include "components/button.html" with label="Add to cart" variant="primary" type="submit" %}</fieldset></form>{% if request.user.is_authenticated %}<p><a href="{% url 'catalog:checkout' listing.pk %}">Checkout this listing</a></p>{% endif %}{% else %}<p>{% include "components/status_pill.html" with state="REJECTED" label="Out of stock" %}</p>{% endif %}</aside>
+</div>
+{% endblock %}

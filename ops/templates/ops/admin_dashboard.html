@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Operations · Kola Market{% endblock %}
+{% block content %}
+<p class="eyebrow">Staff only · Operations</p>
+      <h1>Market overview</h1>
+      <p class="intro">Current ledger liabilities, service queues, disputes, and order distribution.</p>
+      <section class="ops-metrics" aria-label="Market metrics">
+        <article class="ops-metric">
+          <h2>Ledger liabilities</h2>
+          <p class="ops-metric__value">{{ liabilities|intcomma }}</p>
+          <p class="ops-metric__note">base units · live ledger total</p>
+        </article>
+        <article class="ops-metric">
+          <h2>Reserve coverage</h2>
+          {% if ratio is None %}
+            <p class="ops-metric__value">—</p>
+            <p class="ops-metric__note">No positive liability to compare</p>
+          {% else %}
+            <p class="ops-metric__value {% if below_reserve_threshold %}is-low{% endif %}">{{ ratio|floatformat:2 }}:1</p>
+            <p class="ops-metric__note">{{ hot_reserves|intcomma }} hot + {{ cold_reserves|intcomma }} cold base units</p>
+          {% endif %}
+        </article>
+        <article class="ops-metric">
+          <h2>Open disputes</h2>
+          <p class="ops-metric__value">{{ open_disputes|intcomma }}</p>
+          <p class="ops-metric__note">Awaiting an admin ruling</p>
+        </article>
+        <article class="ops-metric">
+          <h2>Queue depth</h2>
+          {% if queue_depths is None %}
+            <p class="ops-metric__value is-low">Unavailable</p>
+            <p class="ops-metric__note">Redis could not be reached</p>
+          {% else %}
+            <p class="ops-metric__value">{{ queue_total|intcomma }}</p>
+            <p class="ops-metric__note">
+              Withdrawals {{ queue_depths.withdrawals|intcomma }}
+            </p>
+          {% endif %}
+        </article>
+      </section>
+
+      <nav aria-label="Operations queues" class="ops-queue-links">
+        <a href="{% url 'ops:order-list' %}">Orders</a>
+        <a href="{% url 'ops:reserves' %}">Reserve history</a>
+        <a href="{% url 'orders:dispute-queue' %}">Disputes</a>
+        <a href="{% url 'catalog:vendor-approval-queue' %}">Vendor applications</a>
+        <a href="{% url 'catalog:maker-approval-queue' %}">Maker applications</a>
+        <a href="{% url 'ops:withdrawal-approval-queue' %}">Manual withdrawals</a>
+        <a href="{% url 'ops:health-page' %}">Health</a>
+      </nav>
+
+      <section class="ops-section" aria-labelledby="switches-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Operational controls</p>
+            <h2 id="switches-heading">Kill switches</h2>
+          </div>
+        </div>
+        <dl class="ops-switches">
+          <div>
+            <dt>New orders</dt>
+            <p>Stops new orders from being created. Existing orders remain available.</p>
+            <dd class="{% if new_orders_enabled %}is-enabled{% else %}is-paused{% endif %}">
+              {% if new_orders_enabled %}Enabled{% else %}Paused{% endif %}
+            </dd>
+            <small>manage.py kill_new_orders{% if not new_orders_enabled %} --enable{% endif %}</small>
+            <form method="post" action="{% url 'ops:market-switch-toggle' 'new_orders' %}">
+              {% csrf_token %}
+              <label for="new-orders-reason">Reason</label>
+              <input id="new-orders-reason" name="reason" maxlength="1000" required>
+              <button type="submit">{% if new_orders_enabled %}Pause{% else %}Resume{% endif %} new orders</button>
+            </form>
+          </div>
+          <div>
+            <dt>Withdrawals</dt>
+            <p>Stops withdrawal requests and sends. Existing requests remain queued.</p>
+            <dd class="{% if withdrawals_enabled %}is-enabled{% else %}is-paused{% endif %}">
+              {% if withdrawals_enabled %}Enabled{% else %}Paused{% endif %}
+            </dd>
+            <small>manage.py kill_withdrawals{% if not withdrawals_enabled %} --enable{% endif %}</small>
+            <form method="post" action="{% url 'ops:market-switch-toggle' 'withdrawals' %}">
+              {% csrf_token %}
+              <label for="withdrawals-reason">Reason</label>
+              <input id="withdrawals-reason" name="reason" maxlength="1000" required>
+              <button type="submit">{% if withdrawals_enabled %}Pause{% else %}Resume{% endif %} withdrawals</button>
+            </form>
+          </div>
+        </dl>
+      </section>
+
+      <section class="ops-section" aria-labelledby="city-orders-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Delivery zones</p>
+            <h2 id="city-orders-heading">Orders by city</h2>
+          </div>
+        </div>
+        <ul class="ops-city-list">
+          {% for city in city_orders %}
+            <li>
+              <span>{{ city.name }}</span>
+              <strong>{{ city.order_count|intcomma }}</strong>
+            </li>
+          {% empty %}
+            <li>No cities configured.</li>
+          {% endfor %}
+        </ul>
+      </section>
+      <section class="ops-section" aria-labelledby="order-analytics-heading">
+        <h2 id="order-analytics-heading">Order analytics</h2>
+        <p>Finalized gross merchandise volume: <strong>{{ finalized_gmv|intcomma }}</strong> base units</p>
+        <ul class="ops-analytics-list">
+          {% for status, count in status_counts.items %}
+            <li>{{ status }} <strong>{{ count|intcomma }}</strong></li>
+          {% endfor %}
+        </ul>
+        <h3>Top vendors by order count</h3>
+        <ol>
+          {% for vendor in top_vendors %}
+            <li>{{ vendor.user__username }} — {{ vendor.order_count }} orders, {{ vendor.finalized_gmv|default:0|intcomma }} base units</li>
+          {% empty %}<li>No vendor orders.</li>{% endfor %}
+        </ol>
+        <h3>Top listings by order count</h3>
+        <ol>
+          {% for listing in top_listings %}
+            <li>{{ listing.title }} — {{ listing.order_count }} orders, {{ listing.finalized_gmv|default:0|intcomma }} base units</li>
+          {% empty %}<li>No listing orders.</li>{% endfor %}
+        </ol>
+        <h3>Disputes</h3>
+        <p>{{ dispute_counts.total }} total · {{ dispute_counts.open }} open · {{ dispute_counts.ruled }} ruled</p>
+        <ul class="ops-analytics-list">
+          {% for outcome, count in dispute_outcomes.items %}
+            <li>{{ outcome }} <strong>{{ count }}</strong></li>
+          {% endfor %}
+        </ul>
+      </section>
+      <section class="ops-section" aria-labelledby="payment-volume-heading">
+        <h2 id="payment-volume-heading">Payment volume · last 30 days</h2>
+        <h3>Deposits</h3>
+        <ul class="ops-analytics-list">
+          {% for chain, totals in deposits_30d.items %}
+            <li>{{ chain }}: {{ totals.count }} credited deposits · {{ totals.volume|intcomma }} base units credited</li>
+          {% endfor %}
+        </ul>
+        <h3>Withdrawals</h3>
+        <ul class="ops-analytics-list">
+          {% for chain, totals in withdrawals_30d.items %}
+            <li>{{ chain }}: {{ totals.count }} withdrawals · {{ totals.volume|intcomma }} base units</li>
+          {% endfor %}
+        </ul>
+      </section>
+      <p class="report-note">Reserve figures use configured hot and cold balances. Queue depth reflects pending Redis financial jobs.</p>
+{% endblock %}

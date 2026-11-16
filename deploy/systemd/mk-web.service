@@ -1,0 +1,23 @@
+[Unit]
+Description=Kola Market web application
+After=network.target postgresql.service redis-server.service
+Requires=postgresql.service redis-server.service
+
+[Service]
+Type=simple
+User=kola
+Group=kola
+WorkingDirectory=/opt/kola
+EnvironmentFile=/opt/kola/.env
+ExecStart=/opt/kola/.venv/bin/gunicorn mk.wsgi:application --bind 127.0.0.1:8000 --workers 3 --timeout 60
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

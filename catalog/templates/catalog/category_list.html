@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Browse categories · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Catalog</p><h1>Browse categories</h1><p>Active physical listings from approved vendors.</p></header>
+<form class="catalog-search" method="get" action="{% url 'catalog:search' %}"><fieldset><legend>Search listings</legend>{% include "components/form_field.html" with field=search_form.q %}{% include "components/button.html" with label="Search" variant="primary" type="submit" %}</fieldset></form>
+{% if categories %}<ul class="category-grid category-grid--browse">{% for category in categories %}<li><a class="listing-card category-shortcut" href="{% url 'catalog:category' category.slug %}"><svg class="category-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><h2>{{ category.name }}</h2><span class="muted">Browse available listings in this category.</span></a></li>{% endfor %}</ul>{% else %}{% include "components/empty_state.html" with title="No categories have active listings" description="Categories will appear here when approved vendors publish in-stock physical listings." %}{% endif %}
+{% endblock %}

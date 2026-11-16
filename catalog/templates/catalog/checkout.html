@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Checkout — {{ listing.title }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'catalog:listing' listing.pk %}">{{ listing.title }}</a></p>
+      <h1>Checkout</h1>
+      <form class="checkout-form" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="checkout-fields"><p>
+          {{ form.quantity.errors }}
+          <label for="{{ form.quantity.id_for_label }}">Quantity</label>
+          {{ form.quantity }}
+        </p>
+        {% if listing.shipping_required %}
+          <p>
+            {{ form.shipping_address.errors }}
+            <label for="{{ form.shipping_address.id_for_label }}">Shipping address</label>
+            {{ form.shipping_address }}
+          </p>
+          <p>
+            {{ form.shipping_phone.errors }}
+            <label for="{{ form.shipping_phone.id_for_label }}">Shipping phone</label>
+            {{ form.shipping_phone }}
+          </p>
+        {% endif %}
+        {% if listing.shipping_required or listing.delivery_zone_id %}
+          <p>
+            {{ form.delivery_zone.errors }}
+            <label for="{{ form.delivery_zone.id_for_label }}">Delivery zone</label>
+            {{ form.delivery_zone }}
+          </p>
+        {% endif %}
+        </div>
+        <aside class="checkout-summary">
+          <p class="price">{{ listing.price_base }} base</p>
+          <p>Available: {{ listing.stock }}</p>
+          {% if not listing.stock %}<p role="status">This listing is out of stock.</p>{% endif %}
+          <button class="button button--primary" type="submit" {% if not listing.stock %}disabled{% endif %}>
+          Place order
+          </button>
+        </aside>
+      </form>
+{% endblock %}

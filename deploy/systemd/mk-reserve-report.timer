@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the Kola Market reserve report daily
+
+[Timer]
+OnCalendar=*-*-* 00:15:00 UTC
+Persistent=true
+RandomizedDelaySec=60
+Unit=mk-reserve-report.service
+
+[Install]
+WantedBy=timers.target

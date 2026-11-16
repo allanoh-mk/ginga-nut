@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Balance · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Account funds</p><h1>Balance</h1><p>Available funds can pay for orders or be requested for withdrawal to a verified payout address.</p></header>
+{% include "components/balance_strip.html" with available=available_balance held=held_balance %}
+<nav class="component-row" aria-label="Balance actions">{% include "components/button.html" with label="Add funds" variant="primary" href="/accounts/profile/deposits/" %}{% include "components/button.html" with label="Request withdrawal" variant="secondary" href="/accounts/profile/withdrawals/" %}<a href="{% url 'accounts:deposit_history' %}">Deposit history</a></nav>
+<section class="guide-section"><h2>How balance funds move</h2><p>Confirmed deposits can be converted at a locked quote. Order funding moves funds into escrow. A completed or refunded order returns or releases the escrow according to its final state.</p></section>
+{% endblock %}

@@ -1,0 +1,50 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="{% url 'home' %}" translate="no">Kola <span>Market</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="{% url 'catalog:categories' %}">Browse</a>
+      <a href="{% url 'how-it-works' %}">How it works</a>
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'orders:history' %}">My Orders</a>
+        <a href="{% url 'accounts:deposits' %}">Deposits</a>
+        <a href="{% url 'accounts:withdrawals' %}">Withdrawals</a>
+        <a href="{% url 'core:notifications' %}" aria-label="Notifications{% if unread_notification_count %}, {{ unread_notification_count }} unread{% endif %}">
+          Notifications
+          {% if unread_notification_count %}
+            <span class="notification-badge">{{ unread_notification_count }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+      <a href="{% url 'ops:reserves' %}">Reserves</a>
+      <a href="{% url 'ops:canary' %}">Canary</a>
+      {% if request.user.is_staff %}
+        <a href="{% url 'ops:dashboard' %}">Operations</a>
+        <a href="{% url 'ops:withdrawal-approval-queue' %}">Withdrawals</a>
+        <a href="{% url 'orders:dispute-queue' %}">Disputes</a>
+        <a href="{% url 'catalog:vendor-approval-queue' %}">Vendors</a>
+        <a href="{% url 'catalog:maker-approval-queue' %}">Makers</a>
+      {% elif market_role == "vendor" %}
+        <a href="{% url 'catalog:vendor-dashboard' %}">Your shop</a>
+        <a href="{% url 'catalog:vendor-order-queue' %}">Order queue</a>
+        <a href="{% url 'catalog:vendor-payouts' %}">Payouts</a>
+      {% elif request.user.is_authenticated %}
+        <a href="{% url 'catalog:vendor-dashboard' %}">Apply to sell</a>
+      {% endif %}
+    </nav>
+    <div class="identity">
+      {% if request.user.is_authenticated %}
+        <span class="role-avatar role-avatar--{{ market_role }}" aria-hidden="true">{{ market_initials }}</span>
+        <span class="identity__text">
+          <strong>{{ request.user.username }}</strong>
+          <small class="role-label role-label--{{ market_role }}">{{ market_role }}</small>
+        </span>
+        <a class="identity__link" href="{% url 'accounts:profile' %}">Profile</a>
+        <a class="identity__link" href="{% url 'accounts:logout_confirm' %}">Sign out</a>
+      {% else %}
+        <a class="identity__link" href="{% url 'accounts:login' %}">Sign in</a>
+        <a class="identity__join" href="{% url 'accounts:register' %}">Join</a>
+      {% endif %}
+    </div>
+  </div>
+</header>

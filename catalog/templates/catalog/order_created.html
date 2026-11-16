@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Orders created · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Checkout complete</p><h1>Orders created</h1><p>Stock is reserved. Fund each draft order to proceed.</p></header>
+{% if insufficient_balance %}<p class="flash flash--error" role="status">The balance is below the total of these orders. Add funds on the <a href="{% url 'accounts:deposits' %}">deposit page</a>, then fund each order.</p>{% endif %}
+<ul class="plain-list">{% for order in orders %}<li class="listing-card"><h2><a href="{% url 'orders:detail' order.pk %}">Order <span class="order-id">#{{ order.pk }}</span></a></h2><p>{{ order.listing_title }} · <span class="amount">{{ order.total_amount }} base units</span> · {% include "components/status_pill.html" with state=order.state label=order.get_state_display %}</p></li>{% endfor %}</ul>
+<p>Order total: <strong class="amount">{{ total }} base units</strong>. Available balance: <strong class="amount">{{ available_balance }} base units</strong>.</p>
+<p>{% include "components/button.html" with label="View orders" variant="secondary" href="/orders/" %}</p>
+{% endblock %}

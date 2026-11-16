@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}New orders paused · Kola Market{% endblock %}
+{% block content %}<p class="eyebrow">Feature status</p><h1>New orders are paused</h1><p>Existing orders remain available. New orders will be accepted when the service resumes.</p><p><a href="{% url 'orders:history' %}">View orders</a></p>{% endblock %}

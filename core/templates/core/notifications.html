@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+      <form method="post" action="{% url 'core:mark-all-read' %}">
+        {% csrf_token %}
+        <button type="submit">Mark all read</button>
+      </form>
+      <ol class="notification-list">
+        {% for notification in notifications %}
+          <li{% if not notification.read_at %} class="notification-list__unread"{% endif %}>
+            <a href="{% url 'core:open-notification' notification.pk %}">
+              <span aria-hidden="true">{{ notification.icon }}</span>
+              {{ notification.message }}
+            </a>
+            <time datetime="{{ notification.created_at|date:'c' }}">
+              {{ notification.created_at|timesince }} ago
+            </time>
+          </li>
+        {% empty %}
+          <li>You have no notifications.</li>
+        {% endfor %}
+      </ol>
+      {% include "pagination.html" %}
+{% endblock %}

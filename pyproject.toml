@@ -1,0 +1,11 @@
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [".venv", "venv", "**/migrations/**", "docs/codebase/.codebase-scan.txt"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "PIE"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

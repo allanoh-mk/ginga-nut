@@ -1,0 +1,30 @@
+body, #container, .main, #main, .content { color: var(--text); background: var(--bg); }
+#header { min-height: 56px; padding: 8px 16px; display: flex; align-items: center; border-bottom: 1px solid var(--hairline); color: var(--text); background: var(--bg); }
+#branding h1, #branding h1 a, #site-name a { color: var(--text); font-size: 15px; font-weight: 650; text-decoration: none; }
+#user-tools { color: var(--muted); font-size: 12px; }
+#user-tools a { color: var(--text); }
+#user-tools a:hover { color: var(--accent-hover); }
+.breadcrumbs { padding: 12px 16px; border-bottom: 1px solid var(--hairline); color: var(--muted); background: var(--bg); }
+.breadcrumbs a, #content a { color: var(--text); }
+.breadcrumbs a:hover, #content a:hover { color: var(--accent-hover); }
+#nav-sidebar, #changelist-filter { border-color: var(--hairline); color: var(--text); background: var(--surface); }
+#nav-sidebar a, #changelist-filter a { color: var(--muted); }
+#nav-sidebar a:hover, #changelist-filter a:hover { color: var(--text); background: var(--surface-2); }
+.module, .inline-group, #content-related, .submit-row, .object-tools, .selector, .selector-chosen { border: 1px solid var(--hairline); border-radius: 6px; color: var(--text); background: var(--surface); }
+.module h2, .module caption, .inline-group h2, .selector h2 { color: var(--text); background: var(--surface-2); }
+#content h1, #content h2, #content h3, .module h2, .inline-group h2 { color: var(--text); }
+#changelist table, .change-list table, .results table { width: 100%; border-collapse: collapse; background: var(--surface); }
+#changelist table th, #changelist table td, .results th, .results td { padding: 10px 12px; border-bottom: 1px solid var(--hairline); color: var(--text); }
+#changelist table thead th, .results thead th { position: sticky; top: 0; color: var(--text); background: var(--surface-2); }
+#changelist table tbody tr:hover, .results tbody tr:hover { background: var(--surface-2); }
+input, textarea, select, .vTextField, .vLargeTextField { min-height: 38px; border: 1px solid var(--hairline); border-radius: 4px; color: var(--text); background: var(--surface); }
+input:focus, textarea:focus, select:focus { border-color: var(--accent); outline: 0; box-shadow: 0 0 0 2px var(--accent-dim); }
+button, input[type=submit], .button, .submit-row input { min-height: 44px; padding: 8px 12px; border: 1px solid var(--hairline); border-radius: 4px; color: var(--text); background: var(--surface-2); font: 600 13px/1.2 var(--sans); }
+.submit-row input.default, input.default, .object-tools a.addlink { border-color: var(--accent); color: var(--bg); background: var(--accent); }
+.submit-row input.default:hover, input.default:hover { background: var(--accent-hover); }
+.messagelist li, .messagelist .success, .messagelist .warning, .messagelist .error { border: 1px solid var(--hairline); border-left: 3px solid var(--muted); color: var(--text); background: var(--surface); }
+.messagelist .success { border-left-color: var(--success); }
+.messagelist .warning, .messagelist .error { border-left-color: var(--danger); }
+.errornote, .errors, ul.errorlist { color: var(--danger); }
+#content-main, .content-main { min-width: 0; }
+@media (min-width: 768px) { #content { padding-inline: 16px; } }

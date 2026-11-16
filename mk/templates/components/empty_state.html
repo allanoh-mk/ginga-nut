@@ -1,0 +1,6 @@
+<section class="empty-state" aria-labelledby="{{ id|default:'empty-state-title' }}">
+  <p class="eyebrow">{{ eyebrow|default:'No records' }}</p>
+  <h2 id="{{ id|default:'empty-state-title' }}">{{ title }}</h2>
+  <p>{{ description }}</p>
+  {% if action_label and action_url %}<a class="button button--secondary" href="{{ action_url }}">{{ action_label }}</a>{% endif %}
+</section>

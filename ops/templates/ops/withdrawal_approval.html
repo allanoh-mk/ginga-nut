@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Withdrawal approvals · Kola Market{% endblock %}
+{% block content %}
+<p class="eyebrow">Staff only · Operations</p>
+      <h1>Pending withdrawal approvals</h1>
+      {% if messages %}
+        <ul class="messages" role="status">
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+      {% for withdrawal in page_obj %}
+        <section aria-labelledby="withdrawal-{{ withdrawal.pk }}">
+          <h2 id="withdrawal-{{ withdrawal.pk }}">Withdrawal {{ withdrawal.pk }}</h2>
+          <dl>
+            <dt>User</dt><dd>{{ withdrawal.user.username }}</dd>
+            <dt>Destination</dt><dd>{{ withdrawal.get_chain_display }} · <code>{{ withdrawal.destination }}</code></dd>
+            <dt>Gross amount</dt><dd>{{ withdrawal.amount_base_units }} base units</dd>
+            <dt>Market fee (3%)</dt><dd>{{ withdrawal.fee_base_units }} base units</dd>
+            <dt>Net payout if approved</dt><dd>{{ withdrawal.net_amount_base_units }} base units</dd>
+            <dt>Requested</dt><dd>{{ withdrawal.created_at|date:"Y-m-d H:i" }} UTC</dd>
+          </dl>
+          <form method="post" action="{% url 'ops:withdrawal-approve' withdrawal.pk %}">
+            {% csrf_token %}
+            <button type="submit">Approve and queue</button>
+          </form>
+          <form method="post" action="{% url 'ops:withdrawal-reject' withdrawal.pk %}">
+            {% csrf_token %}
+            <label for="reason-{{ withdrawal.pk }}">Reason for rejection</label>
+            <textarea id="reason-{{ withdrawal.pk }}" name="reason" maxlength="500" required></textarea>
+            <button type="submit">Reject and refund</button>
+          </form>
+        </section>
+      {% empty %}
+        {% include "components/empty_state.html" with title="No withdrawals await approval" description="Manual withdrawal requests will appear here after the approval threshold is reached." %}
+      {% endfor %}
+      {% include "pagination.html" %}
+      <p><a href="{% url 'ops:dashboard' %}">Back to operations</a></p>
+{% endblock %}

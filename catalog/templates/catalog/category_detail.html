@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }} · Kola Market{% endblock %}
+{% block content %}
+<p><a href="{% url 'catalog:categories' %}">All categories</a></p><header class="page-heading"><p class="eyebrow">Category · <span class="mono">{{ listings.paginator.count }}</span></p><h1>{{ category.name }}</h1><p>In-stock physical listings from approved vendors.</p></header>
+{% if listings %}<ul class="listing-grid">{% for listing in listings %}{% include "catalog/_listing_card.html" with listing=listing %}{% endfor %}</ul>{% include "pagination.html" %}{% else %}{% include "components/empty_state.html" with title="No active listings in this category" description="Listings will appear here when an approved vendor has an active product in stock." action_label="Browse categories" action_url="/catalog/" %}{% endif %}
+{% endblock %}

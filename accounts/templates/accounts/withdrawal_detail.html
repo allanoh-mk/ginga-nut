@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Withdrawal status · Kola Market{% endblock %}
+{% block content %}
+<h1>Withdrawal status</h1>
+      {% if messages %}
+        <ul class="messages" role="status">
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+      <dl>
+        <dt>Status</dt><dd>{{ withdrawal.get_state_display }}</dd>
+        <dt>Chain</dt><dd>{{ withdrawal.get_chain_display }}</dd>
+        <dt>Destination</dt><dd><code>{{ withdrawal.destination }}</code></dd>
+        <dt>Gross amount debited</dt><dd>{{ withdrawal.amount_base_units }} base units</dd>
+        {% if withdrawal.state == "rejected" %}
+          <dt>Market fee</dt><dd>Not charged</dd>
+          <dt>Refunded amount</dt><dd>{{ withdrawal.amount_base_units }} base units</dd>
+          <dt>Net payout</dt><dd>Not sent</dd>
+        {% else %}
+          <dt>Market fee (3%, rounded up)</dt><dd>{{ withdrawal.fee_base_units }} base units</dd>
+          <dt>Net payout</dt><dd>{{ withdrawal.net_amount_base_units }} base units</dd>
+        {% endif %}
+        <dt>Requested</dt><dd>{{ withdrawal.created_at|date:"Y-m-d H:i" }} UTC</dd>
+        {% if withdrawal.provider_reference %}
+          <dt>Provider reference</dt><dd><code>{{ withdrawal.provider_reference }}</code></dd>
+        {% endif %}
+        {% if withdrawal.rejection_reason %}
+          <dt>Rejection reason</dt><dd>{{ withdrawal.rejection_reason }}</dd>
+        {% endif %}
+      </dl>
+      <p><a href="{% url 'accounts:withdrawals' %}">Back to withdrawals</a></p>
+{% endblock %}

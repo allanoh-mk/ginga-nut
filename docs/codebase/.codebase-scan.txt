@@ -1,0 +1,355 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.coverage
+.env
+.env.example
+.github
+.github/workflows
+.github/workflows/ci.yml
+.gitignore
+.playwright-mcp
+.pytest_cache
+.pytest_cache/.gitignore
+.pytest_cache/CACHEDIR.TAG
+.pytest_cache/README.md
+.pytest_cache/v
+.pytest_cache/v/cache
+.pytest_cache/v/cache/lastfailed
+.pytest_cache/v/cache/nodeids
+.ruff_cache
+.ruff_cache/.gitignore
+.ruff_cache/0.17.4
+.ruff_cache/0.17.4/10346649501703761650
+.ruff_cache/0.17.4/10836844425523599399
+.ruff_cache/0.17.4/11330833395249076316
+.ruff_cache/0.17.4/11357237801125763252
+.ruff_cache/0.17.4/11431907802634019454
+.ruff_cache/0.17.4/12492463838779483567
+.ruff_cache/0.17.4/12839620677080522800
+.ruff_cache/0.17.4/13317618454531941400
+.ruff_cache/0.17.4/13468028371025298616
+.ruff_cache/0.17.4/14050615599420779135
+.ruff_cache/0.17.4/14358310544496990303
+.ruff_cache/0.17.4/14886698736197990318
+.ruff_cache/0.17.4/15339183620956698243
+.ruff_cache/0.17.4/15715485687490549579
+.ruff_cache/0.17.4/15986114989132983772
+.ruff_cache/0.17.4/16170475403298878179
+.ruff_cache/0.17.4/17057154831085061707
+.ruff_cache/0.17.4/1803566272513551365
+.ruff_cache/0.17.4/18129833162638374868
+.ruff_cache/0.17.4/1863602967128029356
+.ruff_cache/0.17.4/1974166896338199251
+.ruff_cache/0.17.4/2881541211426685793
+.ruff_cache/0.17.4/3469115864908576402
+.ruff_cache/0.17.4/3966068704751918615
+.ruff_cache/0.17.4/4099253261936262383
+.ruff_cache/0.17.4/4449566767183140991
+.ruff_cache/0.17.4/4664852817179481271
+.ruff_cache/0.17.4/4967084374744935885
+.ruff_cache/0.17.4/5923180023059712228
+.ruff_cache/0.17.4/6215670217105217792
+.ruff_cache/0.17.4/6516983363703709198
+.ruff_cache/0.17.4/665365380573547508
+.ruff_cache/0.17.4/6721691521104484127
+.ruff_cache/0.17.4/6778438091738607359
+.ruff_cache/0.17.4/69907335272053435
+.ruff_cache/0.17.4/8051283504635260544
+.ruff_cache/0.17.4/8613229900911263543
+.ruff_cache/0.17.4/8836528039929809183
+.ruff_cache/0.17.4/9360067251289649348
+.ruff_cache/0.17.4/9605512424758538727
+.ruff_cache/0.17.4/9708108430078161217
+.ruff_cache/0.17.4/9759713543906696634
+.ruff_cache/CACHEDIR.TAG
+CONVENTIONS.md
+GATES.md
+Kala_Market_Desktop_Preview.png
+Kala_Market_Desktop_Wireframes.svg
+Kala_Market_Desktop_Wireframes_grayscale.png
+Kala_Market_Desktop_Wireframes_grayscale.svg
+Kala_Market_Wireframes.svg
+README.md
+accounts
+accounts/__init__.py
+accounts/admin.py
+accounts/admin_site.py
+accounts/apps.py
+accounts/forms.py
+accounts/migrations
+accounts/migrations/0001_initial.py
+accounts/migrations/0002_add_pgp_authentication.py
+accounts/migrations/__init__.py
+accounts/models.py
+accounts/templates
+accounts/templates/accounts
+accounts/templates/accounts/_site_header.html
+accounts/templates/accounts/balance.html
+accounts/templates/accounts/deposit_history.html
+accounts/templates/accounts/deposit_quote.html
+accounts/templates/accounts/deposits.html
+accounts/templates/accounts/login.html
+accounts/templates/accounts/logout_confirm.html
+accounts/templates/accounts/payout_address_verify.html
+accounts/templates/accounts/payout_addresses.html
+accounts/templates/accounts/pgp_auth.html
+accounts/templates/accounts/pgp_recovery_codes.html
+accounts/templates/accounts/profile.html
+accounts/templates/accounts/recovery_login.html
+accounts/templates/accounts/register.html
+accounts/templates/accounts/wallet_challenge.html
+accounts/templates/accounts/wallets.html
+accounts/templates/accounts/withdrawal_detail.html
+accounts/templates/accounts/withdrawals.html
+accounts/test_payment_views.py
+accounts/tests.py
+accounts/urls.py
+accounts/views.py
+branding
+branding/kola-market
+branding/kola-market/README.md
+branding/kola-market/kola-app-icon.svg
+branding/kola-market/kola-brand-sheet.png
+branding/kola-market/kola-brand-sheet.svg
+branding/kola-market/kola-horizontal-mono-black.svg
+branding/kola-market/kola-horizontal-mono-white.svg
+branding/kola-market/kola-horizontal.svg
+branding/kola-market/kola-icon-16.png
+branding/kola-market/kola-icon-180.png
+branding/kola-market/kola-icon-32.png
+branding/kola-market/kola-icon-512.png
+branding/kola-market/kola-monogram-black.svg
+branding/kola-market/kola-monogram-white.svg
+branding/kola-market/kola-monogram.svg
+branding/kola-market/kola-reversed.svg
+branding/kola-market/kola-seal.svg
+branding/kola-market/kola-stacked.svg
+catalog
+catalog/__init__.py
+catalog/admin.py
+catalog/apps.py
+catalog/exceptions.py
+catalog/forms.py
+catalog/migrations
+catalog/migrations/0001_initial.py
+catalog/migrations/0002_alter_vendorprofile_bond_amount.py
+catalog/migrations/0003_remove_vendorprofile_bond_amount_and_more.py
+catalog/migrations/0004_listing_delivery_zone_listing_image_and_more.py
+catalog/migrations/0005_listing_average_rating_listing_review_count_review.py
+catalog/migrations/0006_listing_is_approved.py
+catalog/migrations/__init__.py
+catalog/models.py
+catalog/review_signals.py
+catalog/templates
+catalog/templates/catalog
+catalog/templates/catalog/_listing_card.html
+catalog/templates/catalog/cart.html
+catalog/templates/catalog/category_detail.html
+catalog/templates/catalog/category_list.html
+catalog/templates/catalog/checkout.html
+catalog/templates/catalog/checkout_confirm.html
+catalog/templates/catalog/listing_delete.html
+catalog/templates/catalog/listing_detail.html
+catalog/templates/catalog/listing_form.html
+catalog/templates/catalog/listing_reviews.html
+catalog/templates/catalog/maker_approval_queue.html
+catalog/templates/catalog/order_created.html
+catalog/templates/catalog/search_results.html
+catalog/templates/catalog/vendor_apply.html
+catalog/templates/catalog/vendor_approval_queue.html
+catalog/templates/catalog/vendor_dashboard.html
+catalog/templates/catalog/vendor_order_queue.html
+catalog/templates/catalog/vendor_payouts.html
+catalog/templates/catalog/vendor_public_profile.html
+catalog/test_discovery.py
+catalog/test_reviews.py
+catalog/tests.py
+catalog/urls.py
+catalog/views.py
+core
+core/__init__.py
+core/apps.py
+core/context_processors.py
+core/jobs.py
+core/middleware.py
+core/migrations
+core/migrations/0001_initial.py
+core/migrations/0002_notification.py
+core/migrations/0003_alter_notification_type.py
+core/migrations/__init__.py
+core/models.py
+core/services
+core/services/__init__.py
+core/services/_wallet_linking.py
+core/services/accept.py
+core/services/approve_vendor.py
+core/services/approve_withdrawal.py
+core/services/authenticate_user.py
+core/services/cancel_order.py
+core/services/capture_rate_feed.py
+core/services/convert_deposit.py
+core/services/create_deposit_address.py
+core/services/create_order.py
+core/services/create_payout_address_challenge.py
+core/services/create_vendor_profile.py
+core/services/create_wallet_link_challenge.py
+core/services/decrement_stock.py
+core/services/delete_listing.py
+core/services/delete_payout_address.py
+core/services/dispatch_order.py
+core/services/expire_funding.py
+core/services/extend_finalize.py
+core/services/fake_deposit.py
+
+=== STACK DETECTION (manifest files) ===
+
+--- requirements.txt ---
+Django==5.1.15
+psycopg[binary]==3.2.13
+redis==5.3.1
+gunicorn==23.0.0
+argon2-cffi==23.1.0
+Pillow==11.3.0
+python-dotenv==1.2.4
+cryptography==50.0.2
+tronpy==0.7.0
+requests==2.32.5
+PySocks==1.7.1
+pytest==8.4.2
+pytest-django==4.9.0
+coverage==7.17.2
+
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+No linting or formatting config files found in project root.
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+--- .env.example ---
+# Generate with: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+DJANGO_SECRET_KEY=
+DJANGO_DEBUG=true
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+DJANGO_CSRF_TRUSTED_ORIGINS=
+# Production (DJANGO_DEBUG=false) requires exact v3 onion hostnames.
+DJANGO_ONION_HOSTS=
+
+POSTGRES_DB=kola_market
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=
+POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_CONN_MAX_AGE=60
+
+QUEUE_REDIS_URL=redis://127.0.0.1:6379/0
+LOGIN_RATE_LIMIT_REDIS_URL=redis://127.0.0.1:6379/0
+
+# Rate requests are server-side, keyless, and require a Tor SOCKS5h listener.
+RATE_FEED_SOCKS_PROXY=socks5h://127.0.0.1:9050
+RATE_FEED_TIMEOUT_SECONDS=10
+
+# Keep providers set to fake until every required provider setting is configured.
+BTC_PROVIDER=fake
+LTC_PROVIDER=fake
+TRC20_PROVIDER=fake
+XMR_PROVIDER=fake
+BTC_CONFIRMATIONS=2
+LTC_CONFIRMATIONS=6
+TRC20_CONFIRMATIONS=20
+XMR_CONFIRMATIONS=10
+
+BTCPAY_SERVER_URL=
+BTCPAY_STORE_ID=
+BTCPAY_API_KEY=
+TRONGRID_API_URL=https://api.trongrid.io
+TRONGRID_API_KEY=
+TETHER_TRC20_CONTRACT=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
+TRC20_CONTRACT_WHITELIST=
+TRC20_RATE_SYMBOL=
+TRC20_TOKEN_DECIMALS=6
+# Dotted local callable in the form package.module:function_name; it must
+# derive a unique address without sending user details to a third party.
+TRON_ADDRESS_DERIVER=
+# Reserve must point to a wallet provisioned as view-only; all three URLs must differ.
+MONERO_RESERVE_WALLET_RPC_URL=http://127.0.0.1:18083/json_rpc
+MONERO_RESERVE_WALLET_RPC_USER=
+MONERO_RESERVE_WALLET_RPC_PASSWORD=
+MONERO_HOT_WALLET_RPC_URL=http://127.0.0.1:18084/json_rpc
+MONERO_HOT_WALLET_RPC_USER=
+MONERO_HOT_WALLET_RPC_PASSWORD=
+MONERO_PAYOUT_WALLET_RPC_URL=http://127.0.0.1:18085/json_rpc
+MONERO_PAYOUT_WALLET_RPC_USER=
+MONERO_PAYOUT_WALLET_RPC_PASSWORD=
+# Separate multisig coordinator; it must enforce independent participant approval
+# and never expose signer keys to Kola. Do not set these to participant wallet RPCs.
+MONERO_ESCROW_GATEWAY_URL=
+MONERO_ESCROW_GATEWAY_ALLOWED_HOSTS=
+MONERO_ESCROW_GATEWAY_SECRET=
+MONERO_ESCROW_CALLBACK_URL=
+MONERO_ESCROW_RELEASE_ADDRESS=
+# Local monerod RPC; run the daemon with its peer traffic routed through Tor.
+MONEROD_RPC_URL=http://127.0.0.1:18081/get_info
+MONEROD_TOR_PROXY=127.0.0.1:9050
+
+WITHDRAWAL_FEE_BASE_UNITS=0
+WITHDRAWAL_MAX_TX_BASE_UNITS=200000000
+WITHDRAWAL_MAX_HOURLY_BASE_UNITS=1500000000
+WITHDRAWAL_MAX_DAILY_BASE_UNITS=6000000000
+RESERVE_HOT_BALANCE_BASE_UNITS=0
+RESERVE_COLD_BALANCE_BASE_UNITS=0
+# Public statement signed with an Ed25519 seed encoded as base64.
+# Generate a seed with: python -c "import base64,secrets; print(base64.b64encode(secrets.token_bytes(32)).decode())"
+CANARY_STATEMENT=
+CANARY_SIGNING_KEY=
+# Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+FIELD_ENCRYPTION_KEY=
+
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+None found.
+
+=== GIT RECENT COMMITS (last 20) ===
+No commits found.
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+None found.
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 546
+Total lines of code: 22344
+
+Files by language:
+  Other: 314
+  Python: 231
+  JavaScript: 1
+
+Top 10 largest files:
+preview.sqlite3: 592.0KB
+Kala_Market_Desktop_Wireframes_grayscale.png: 525.8KB
+Kala_Market_Desktop_Wireframes_grayscale.svg: 439.0KB
+Kala_Market_Desktop_Wireframes.svg: 439.0KB
+mobile_wireframes/contact-sheet.png: 424.8KB
+mobile_wireframes_grayscale/contact-sheet.png: 422.1KB
+Kala_Market_Wireframes.svg: 242.4KB
+branding/kola-market/kola-brand-sheet.png: 113.1KB
+Kala_Market_Desktop_Preview.png: 82.1KB
+docs/MARKETPLACE_AUDIT.md: 73.2KB
+
+=== CI/CD PIPELINES ===
+CI/CD: GitHub Actions
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===

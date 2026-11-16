@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Recovery codes · Kola Market{% endblock %}
+{% block content %}
+<header class="page-heading"><p class="eyebrow">Account security</p><h1>Recovery codes</h1></header>
+<p class="flash flash--warning"><strong>These are shown once.</strong> Save them in a private place. Each code works once.</p>
+<ul class="recovery-grid" aria-label="Single-use recovery codes">{% for code in recovery_codes %}<li><code>{{ code }}</code></li>{% endfor %}</ul>
+<p class="print-note">Print this page or save the codes securely before continuing.</p>
+<p>{% include "components/button.html" with label="Continue to profile" variant="primary" href="/accounts/profile/" %}</p>
+{% endblock %}

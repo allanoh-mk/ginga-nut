@@ -1,0 +1,1 @@
+<nav class="breadcrumb" aria-label="Breadcrumb"><ol>{% if items %}{% for item in items %}<li>{% if not forloop.last and item.url %}<a href="{{ item.url }}">{{ item.label }}</a>{% else %}<span aria-current="page">{{ item.label }}</span>{% endif %}</li>{% endfor %}{% else %}<li><span aria-current="page">Kola Market</span></li>{% endif %}</ol></nav>
