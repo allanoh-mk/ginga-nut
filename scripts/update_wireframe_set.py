@@ -17,7 +17,7 @@ MUTED = "#8A8A8A"
 def correct_desktop() -> None:
     paths = [
         *sorted((ROOT / "desktop_wireframes").glob("*.svg")),
-        ROOT / "Kala_Market_Desktop_Wireframes.svg",
+        ROOT / "Kola_Market_Desktop_Wireframes.svg",
     ]
     for path in paths:
         source = path.read_text()
@@ -402,9 +402,9 @@ def generate_desktop_grayscale() -> None:
         source = path.read_text()
         gray = re.sub(r"#[0-9A-Fa-f]{6}", lambda m: grayscale(m.group(0)), source)
         (out / path.name).write_text(gray)
-    source = (ROOT / "Kala_Market_Desktop_Wireframes.svg").read_text()
+    source = (ROOT / "Kola_Market_Desktop_Wireframes.svg").read_text()
     gray = re.sub(r"#[0-9A-Fa-f]{6}", lambda m: grayscale(m.group(0)), source)
-    (ROOT / "Kala_Market_Desktop_Wireframes_grayscale.svg").write_text(gray)
+    (ROOT / "Kola_Market_Desktop_Wireframes_grayscale.svg").write_text(gray)
 
 
 if __name__ == "__main__":

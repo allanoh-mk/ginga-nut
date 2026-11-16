@@ -64,11 +64,11 @@
 .ruff_cache/CACHEDIR.TAG
 CONVENTIONS.md
 GATES.md
-Kala_Market_Desktop_Preview.png
-Kala_Market_Desktop_Wireframes.svg
-Kala_Market_Desktop_Wireframes_grayscale.png
-Kala_Market_Desktop_Wireframes_grayscale.svg
-Kala_Market_Wireframes.svg
+Kola_Market_Desktop_Preview.png
+Kola_Market_Desktop_Wireframes.svg
+Kola_Market_Desktop_Wireframes_grayscale.png
+Kola_Market_Desktop_Wireframes_grayscale.svg
+Kola_Market_Wireframes.svg
 README.md
 accounts
 accounts/__init__.py
@@ -330,14 +330,14 @@ Files by language:
 
 Top 10 largest files:
 preview.sqlite3: 592.0KB
-Kala_Market_Desktop_Wireframes_grayscale.png: 525.8KB
-Kala_Market_Desktop_Wireframes_grayscale.svg: 439.0KB
-Kala_Market_Desktop_Wireframes.svg: 439.0KB
+Kola_Market_Desktop_Wireframes_grayscale.png: 525.8KB
+Kola_Market_Desktop_Wireframes_grayscale.svg: 439.0KB
+Kola_Market_Desktop_Wireframes.svg: 439.0KB
 mobile_wireframes/contact-sheet.png: 424.8KB
 mobile_wireframes_grayscale/contact-sheet.png: 422.1KB
-Kala_Market_Wireframes.svg: 242.4KB
+Kola_Market_Wireframes.svg: 242.4KB
 branding/kola-market/kola-brand-sheet.png: 113.1KB
-Kala_Market_Desktop_Preview.png: 82.1KB
+Kola_Market_Desktop_Preview.png: 82.1KB
 docs/MARKETPLACE_AUDIT.md: 73.2KB
 
 === CI/CD PIPELINES ===

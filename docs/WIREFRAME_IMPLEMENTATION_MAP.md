@@ -110,7 +110,7 @@ The connected Penpot file has two new pages: `Phase 0 · New flows` (Desktop 57�
 | Back controls | Desktop 78 · Back · Subflows | Mobile 79 · Back · Subflows | Mapped subflows in `docs/PAGES.md` |
 | Narrow filter drawer | — | Mobile 80 · Filter drawer · 320px | `/catalog/search/`, category listing |
 
-- [Desktop grayscale set](../Kala_Market_Desktop_Wireframes_grayscale.svg) and [per-frame grayscale sources](../desktop_wireframes_grayscale/) preserve each color’s luminance while removing hue.
+- [Desktop grayscale set](../Kola_Market_Desktop_Wireframes_grayscale.svg) and [per-frame grayscale sources](../desktop_wireframes_grayscale/) preserve each color’s luminance while removing hue.
 - [Mobile grayscale contact sheet](../mobile_wireframes_grayscale/contact-sheet.svg) is available for the same accent-only check.
 - Update [header.html](../mk/templates/partials/header.html) and [sidebar.html](../mk/templates/partials/sidebar.html) together for the compact menu and role-switched navigation; public pages should omit the account sidebar.
 - The ten phone frames cover the listed pinch points and a 320px order-list stress case. The 15-width responsive matrix remains a separate implementation verification task.
